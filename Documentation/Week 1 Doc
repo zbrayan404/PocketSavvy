@@ -1,0 +1,36 @@
+Originally Written by Ashley Stehlik
+Budgeting Website – Week 1 Notes, Website Layout/Features
+
+Pages
+· Be able to track your income, expenses, and saving
+· Setting Goals
+· Dashboard
+· Accounts/IP Tracking
+
+Transaction Page
+· Input: Date, Amount Spent, Category, Account Name, Notes, Tags, Reoccurring Payment (check box)
+o If you select Reoccurring Payment a more detailed box pops up asking if it’s a yearly, monthly, weekly payment.
+· This page will be used to calculate expenses, income, and savings automatically on Budget Page
+
+Reoccurring Page
+· Manage reoccurring payments here
+
+Budget Page
+· Month filtering (also shows future months where you can edit subscriptions)
+· User inputs their budgets for each category
+· Shows expenses
+· Shows income
+· Shows savings
+
+Dashboard Page
+· Goal chart
+· Savings Overview: What you’ve saved so far this month and this year.
+
+Goal Page
+· Set a goal or event
+o How much you want to save by specific date it can show you what to cut back on
+
+Open Source Website Building
+· GrapeJS
+· Svelte
+· Explore options
