@@ -49,8 +49,8 @@
 <div class="filter">
   <button on:click={prevMonth}><ChevronLeft size="{30}" strokeWidth="{3}" /></button>
   <div class="date" >
-    <SelectBox items={months} bind:selected={selectedMonth} fix_size={"200"} ></SelectBox>
-    <SelectBox items={years} bind:selected={year} fix_size={"110"}></SelectBox>
+    <SelectBox items={months} bind:selected={selectedMonth}></SelectBox>
+    <SelectBox items={years} bind:selected={year}></SelectBox>
   </div>
   <button on:click={nextMonth}><ChevronRight size="{30}" strokeWidth="{3}" /></button>
 </div>
@@ -92,6 +92,11 @@
     justify-content: center;
     gap: 12px;
     width: 320px;
+  }
+  @media (max-width: 814px) {
+    .date {
+      width: 250px;
+    }
   }
 
 </style>

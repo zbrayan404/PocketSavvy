@@ -1,14 +1,33 @@
 <script>
+  import { onMount } from "svelte";
+
   export let items = []; 
   export let selected = null; 
   export let fix_size = null; 
 
   // Computed width style for the select element
   let widthStyle = "";
+  let resize = 20;
+
+  function handleResize() {
+      if (window.innerWidth > 814) {
+        resize = 20; // Close menu on desktop
+      } else {
+        resize = 14;
+      }
+    }
+
+  onMount(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  });  
 
   // Reactive statement to update widthStyle when 'selected' changes
   $: {
-    widthStyle = `width: ${selected ? (typeof selected === 'string' ? selected.length : 4) * 20 + 20 : 0}px`;
+    widthStyle = `width: ${selected ? (typeof selected === 'string' ? selected.length : 4) * resize + 20 : 0}px`;
   }
 
   // Function to handle item selection
@@ -20,13 +39,14 @@
 
   // Function to handle focus on the select element
   function handleFocus() {
+    fix_size = selected ? (typeof selected === 'string' ? 9 : 4) * resize + 20 : 0;
     widthStyle = `width: ${fix_size}px`; 
     this.size = 2; 
   }
 
   // Function to handle blur (loss of focus) on the select element
   function handleBlur() {
-    widthStyle = `width: ${selected ? (typeof selected === 'string' ? selected.length : 4) * 20 + 20 : 0}px`;
+    widthStyle = `width: ${selected ? (typeof selected === 'string' ? selected.length : 4) * resize + 20 : 0}px`;
     this.size = 1; 
     this.blur(); 
   }
@@ -50,5 +70,10 @@
     text-align: center;
     height: 50px;
     transition: width 0.3s ease-in-out;
+  }
+  @media (max-width: 814px) {
+    select {
+      font-size: 28px;
+    }
   }
 </style>
