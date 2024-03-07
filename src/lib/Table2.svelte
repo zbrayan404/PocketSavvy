@@ -73,8 +73,7 @@
     }
     .section {
         display: block;
-        width: 59.9%;
-        min-width: 392px;
+        min-width: 341px;
         overflow: auto;
     }
     table {
