@@ -27,12 +27,16 @@
         return maxDigits - amount.toFixed(2).length + 1;
     };
 
-    // Function to get color for category: Ongoing
+    // Function to get color for category
     const getColorForCategory = (categoryName) => {
         const foundCategory = categoryList.find(item => item.category === categoryName);
         return foundCategory ? foundCategory.color : 'black';
     };
 
+    // Filter dataSet based on categoryList
+    const filteredData = dataSet.filter(item => {
+        return categoryList.some(category => category.category === item.category);
+    });
 </script>
 
 <section class="section">
@@ -47,23 +51,27 @@
             </tr>
         </thead>
         <tbody>
-            {#each dataSet as { category, current, budget, difference}}
+            {#each filteredData as { category, current, budget, difference }}
             <tr class="category-overview" key={category}>
                 <td class="category-title">
-                    {category}
+                    <div class="category">
+                        <div class="category-indicator" style="background-color: {getColorForCategory(category)}"></div>
+                        <span class="title">{category}</span>
+                    </div>
                 </td>
                 <td class="budget-summary">$<span style="padding-left: {dollarPadding(budget, "budget") * 6}px">{budget.toFixed(2)}</span></td>
                 <td class="current-summary">$<span style="padding-left: {dollarPadding(current, "current") * 6}px">{current.toFixed(2)}</span></td>
                 <td class="differ-summary">$<span style="padding-left: {dollarPadding(difference, "difference") * 6}px">{difference.toFixed(2)}</span></td>
                 <td class="actions">
-                    <button class="edit-button"><MoreHorizontal /></button>
+                    <span class="action">
+                        <button class="edit-button"><MoreHorizontal /></button>
+                    </span>
                 </td>
             </tr>
             {/each}
         </tbody>
     </table>
 </section>
-
 
 <style>
     :global(:root) {
@@ -74,6 +82,7 @@
     .section {
         display: block;
         min-width: 341px;
+        width: 100%;
         overflow: auto;
     }
     table {
@@ -119,37 +128,67 @@
     td:first-child {
         border-left: 2px solid;
         border-radius: 11.42px 0 0 11.42px;
+        padding-left: 10px;
     }
     td:last-child {
         border-right: 2px solid;
         border-radius: 0 11.42px 11.42px 0;
+        padding-right: 5px;
     }
     th:first-child {
         border-left: 2px solid;
         border-radius: 11.42px 0 0 11.42px;
+        padding-left: 10px;
     }
     th:last-child {
         border-right: 2px solid;
         border-radius: 0 11.42px 11.42px 0;
+        min-width: 35px;
     }
     .title-header,
     .category-title {
-        min-width: 80px;
+        min-width: 75px;
+        max-width: 100px;
         text-align: left; 
         white-space: nowrap; 
-        padding-left: 15px;
         overflow: hidden;
         text-overflow: ellipsis;
     }
     .differ-header {
-        min-width: 75.41px;
+        min-width: 60.41px;
         text-overflow: ellipsis;
+    }
+    .title {
+        min-width: 75px;
+        max-width: 230px;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-top: 1px;
+    }
+    .category-indicator {
+        width: 15px;
+        height: 15px;
+        color: #f5f7fa;
+        border-radius: 11.83px;
+        background-clip: padding-box;
+        border: 2px solid;
+        flex-shrink: 0;
+    }
+    .category{
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .action{
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     @media (max-width: 764px) {
         .overview-header {
             font-size: 13px;
-            text-transform: uppercase;
         }
         .category-overview {
             font-size: 10px;

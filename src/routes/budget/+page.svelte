@@ -1,18 +1,20 @@
 <script>
+    import Budget from '$lib/Budget.svelte';
     import MonthFilter from '$lib/MonthFilter.svelte';
     import Table2 from '$lib/Table2.svelte';
+    import Budget1 from '$lib/Budget.svelte';
 
     let incomes = [
         { category: 'Employment', current: 3500.00, budget: 3500.00 },
         { category: 'Side Hustle', current: 560.00, budget: 1000.00 },
-        { category: 'Investments', current: 180.00, budget: 300.00},
+        { category: 'InvestmentsInvestments', current: 180.00, budget: 300.00},
         { category: 'Other', current: 12.40, budget: 150.00}
     ];
 
     let category = [
         {category: 'Employment', color: 'blue'},
         {category: 'Side Hustle', color: 'green'},
-        {category: 'Investments', color: 'red'},
+        {category: 'InvestmentsInvestments', color: 'red'},
         {category: 'Other', color: 'yellow'}
     ];
 
@@ -28,13 +30,14 @@
                     <div class="budget">
                         <h2>Income</h2>
                         <div class="table">
+                            <div class="indent"></div>
                             <Table2 dataSet={incomes} categoryList={category} header={['earned']}></Table2>
                         </div>
                     </div>
 	            {/each}
             </div>
             <div class="category-overview">
-                
+                <Budget1></Budget1>
             </div>
         </div>
     </div>
@@ -77,10 +80,12 @@
         display: flex;
         justify-content: space-evenly;
     }
+    .indent {
+        width: 10%;
+    }
     .table {
         width: 100%;
-        padding-left: 5%;
-        transition: padding-left 0.4s ease;
+        display: flex;
     }
     .budget-overview {
         width: 100%;
@@ -93,17 +98,11 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
+        padding: 1.5%;
     }
-
-    @media (max-width: 868px) {
-        .table {
-            padding-left: 2%;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .table {
-            padding-left: 0;
+    @media (max-width: 860px) {
+        .category-overview {
+            display: none;
         }
     }
 </style>
