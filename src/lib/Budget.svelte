@@ -1,6 +1,12 @@
 <script>
-  import ProgressBar from "$lib/ProgressBar.svelte";
+    import ProgressBar from "$lib/ProgressBar.svelte";
+    export let dataSet = [];
+    export let categoryList = [];
 
+    // Filter dataSet based on categoryList
+    const filteredData = dataSet.filter(item => {
+        return categoryList.some(category => category.category === item.category);
+    });
 
 </script>
 
@@ -10,18 +16,14 @@
         <div class="type-overview">
             <h2>Income (Earned)</h2>
             <div class="category-overview">
-                <div class="category">
-                    <h3>Employment:</h3>
-                    <div class="progress-bar">
-                        <ProgressBar></ProgressBar>
+                {#each filteredData as { category, current, budget }}
+                    <div class="category">
+                        <h3>{category}:</h3>
+                        <div class="progress-bar">
+                            <ProgressBar dataSet={[{ category: category, current: current }]} categoryList={ categoryList } budgetTotal={ budget } />
+                        </div>
                     </div>
-                </div>
-                <div class="category">
-                    <h3>Employment:</h3>
-                    <div class="progress-bar">
-                        <ProgressBar></ProgressBar>
-                    </div>
-                </div>
+                {/each}
             </div>
         </div>
         <div class="type-overview">

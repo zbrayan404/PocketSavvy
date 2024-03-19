@@ -1,5 +1,4 @@
 <script>
-    import Budget from '$lib/Budget.svelte';
     import MonthFilter from '$lib/MonthFilter.svelte';
     import Table2 from '$lib/Table2.svelte';
     import Budget1 from '$lib/Budget.svelte';
@@ -7,16 +6,22 @@
     let incomes = [
         { category: 'Employment', current: 3500.00, budget: 3500.00 },
         { category: 'Side Hustle', current: 560.00, budget: 1000.00 },
-        { category: 'InvestmentsInvestments', current: 180.00, budget: 300.00},
+        { category: 'Investments', current: 180.00, budget: 300.00},
         { category: 'Other', current: 12.40, budget: 150.00}
     ];
 
     let category = [
-        {category: 'Employment', color: 'blue'},
-        {category: 'Side Hustle', color: 'green'},
-        {category: 'InvestmentsInvestments', color: 'red'},
-        {category: 'Other', color: 'yellow'}
+        {category: 'Employment', color: 'blue', type: 'Income'},
+        {category: 'Side Hustle', color: 'green', type: 'Income'},
+        {category: 'Investments', color: 'red', type: 'Savings'},
+        {category: 'Other', color: 'yellow', type: 'Income'}
     ];
+
+    let categoryType = ['Income', 'Expenses', 'Savings'];
+   
+    function filterType(data, type) {
+        return data.filter(item => item.type === type);
+    }
 
 </script>
 
@@ -26,18 +31,18 @@
         <h1>Budget</h1>
         <div class="overview">
             <div class="budget-overview"> 
-                {#each Array(3) as _, index (index)}
+                {#each categoryType as type}
                     <div class="budget">
-                        <h2>Income</h2>
+                        <h2>{type}</h2>
                         <div class="table">
                             <div class="indent"></div>
-                            <Table2 dataSet={incomes} categoryList={category} header={['earned']}></Table2>
+                            <Table2 dataSet={incomes} categoryList={filterType(category, type)} header={['earned']}></Table2>
                         </div>
                     </div>
 	            {/each}
             </div>
             <div class="category-overview">
-                <Budget1></Budget1>
+                <Budget1 dataSet={incomes} categoryList={category} ></Budget1>
             </div>
         </div>
     </div>
