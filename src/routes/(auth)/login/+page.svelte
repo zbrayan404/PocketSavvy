@@ -28,7 +28,7 @@
                 <input
                     autocomplete="email"
                     autocorrect="off"
-                    type="email"
+                    type="text"
                     name="email"
                     placeholder="Email..."
                     required

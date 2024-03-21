@@ -86,6 +86,12 @@
     align-items: center;
     justify-content: center;
   }
+  button:hover {
+		box-shadow: 0 0 black;
+		color: var(--gray);
+		background-color: var(--white);
+	}
+
   .date {
     display: flex;
     align-items: center;
