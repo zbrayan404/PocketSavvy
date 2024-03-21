@@ -1,6 +1,7 @@
 <script lang="ts">
 	import debug from "debug";
 	import type { ActionData } from "./$types";
+    import { EyeOff, Eye } from 'lucide-svelte';
 
 	const log = debug("app:routes:register:page.svelte");
 
@@ -14,7 +15,6 @@
 
     let email;
 
-	$: log("form:", form);
 	$: {if(email && form?.error) email.focus()}
 	$: passError = (password?.length && confirm?.length)? (password !== confirm)? true: false : false;
 
@@ -26,9 +26,10 @@
             <h1 class="">Sign Up</h1>
         </div>
         <form
-            class="flex flex-col gap-6 my-6"
+            class="flex flex-col gap-4 my-6"
             method="POST"
 			action="?/register">
+            {#if passError}<p class="error">Passwords do not match!</p>{/if}
             <div>
                 <label for="email">Email</label>
                 <input
@@ -53,42 +54,39 @@
             </div>
             <div>
                 <label for="password">Password</label>
-				{#if !showPassword}
-					<button class="btn-visiblity" type="button" on:click={() => showPassword = true}>
-						<span class="material-symbols-outlined">
-							X
-						</span>
-					</button>
-					<input bind:value={password} autocomplete="off" type='password' id="password" name="password"  placeholder="Password..." required />
-				{:else}
-					<button class="btn-visiblity" type="button" on:click={() => showPassword = false}>
-						<span class="material-symbols-outlined">
-							O
-						</span>
-					</button>
-					<input bind:value={password} autocomplete="off" type='text' id="password" name="password"  placeholder="Password..." required />
-				{/if}
+                <div class="input-wrapper">
+                    {#if !showPassword}
+                        <button class="visiblity" type="button" on:click={() => showPassword = true}>
+                            <EyeOff size={20} />
+                        </button>
+                        <input bind:value={password} autocomplete="off" type='password' id="password" name="password"  placeholder="Password..." required />
+                    {:else}
+                        <button class="visiblity" type="button" on:click={() => showPassword = false}>
+                            <Eye size={20} />
+                        </button>
+                        <input bind:value={password} autocomplete="off" type='text' id="password" name="password"  placeholder="Password..." required />
+                    {/if}
+                </div>
             </div>
 			<div>
                 <label for="confirmPassword">Confirm Password</label>
-                {#if !showConfirm}
-					<button class="btn-visiblity" type="button" on:click={() => showConfirm = true}>
-						<span class="material-symbols-outlined">
-							X
-						</span>
-					</button>
-					<input bind:value={confirm} autocomplete="off" type='password' id="confirmPassword" placeholder="Confirm Password..." name="confirmPassword" required />
-				{:else}
-					<button class="btn-visiblity" type="button" on:click={() => showConfirm = false}>
-						<span class="material-symbols-outlined">
-							O
-						</span>
-					</button>
-					<input bind:value={confirm} autocomplete="off" type='text'  id="confirmPassword" placeholder="Confirm Password..." name="confirmPassword" required />
-				{/if}
+                <div class="input-wrapper">
+                    {#if !showConfirm}
+                    
+                        <button class="visiblity" type="button" on:click={() => showConfirm = true}>
+                            <EyeOff size={20} />
+                        </button>
+                        <input bind:value={confirm} autocomplete="off" type='password' id="confirmPassword" placeholder="Confirm Password..." name="confirmPassword" required />
+                        {:else}
+                        <button class="visiblity" type="button" on:click={() => showConfirm = false}>
+                            <Eye size={20} />
+                        </button>
+                        <input bind:value={confirm} autocomplete="off" type='text'  id="confirmPassword" placeholder="Confirm Password..." name="confirmPassword" required />
+                    {/if}
+                </div>
             </div>
             <div class="flex items-center flex-col gap-1 mt-6">
-                <button class="btn">Sign Up</button>
+                <button disabled={passError}>Sign Up</button>
                 or
                 <a href="/login" class="link">Login</a>
             </div>
@@ -106,7 +104,7 @@
     .body-page {
         position: relative;
 		display: flex;
-        height: 90vh;
+        height: 864px;
 		width: 100%;
 		justify-content: center;
 		align-items: center;
@@ -135,8 +133,17 @@
         font-size: 1.0rem;
         width: 100%;
 	}
-    .card form .btn-visiblity { 		
-        display: none; 	
+    .card form .input-wrapper {
+        position: relative;
+    }
+    .card form .visiblity { 		
+        height: 32px;
+        width: 32px;
+        box-shadow: none;
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        opacity: 0.33;
     }
     .card form button {
 		cursor: pointer;
@@ -151,7 +158,7 @@
 		color: var(--white);
 		font-size: 18px;
 		width: 100%;
-		height: 65px;
+		height: 55px;
 		font-weight: bold;
 		border: 2px solid;
 		transition: 0.3s;
@@ -180,7 +187,6 @@
 		font-family: 'Iosevka', sans-serif;
 		font-size: 1.2rem;
 		padding-bottom: 1rem;
-		padding-top: 25px;
 	}
     .card a {
         color: var(--green);
@@ -196,5 +202,10 @@
 		.card form input {
 			font-size: 1.25rem;
 		}
+
+        .card form .visiblity { 		
+            top: 10px;
+            right: 10px;
+        }
 	}
 </style>
