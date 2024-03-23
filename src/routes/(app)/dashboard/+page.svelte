@@ -18,15 +18,16 @@
         {category: 'Other', color: 'yellow'}
     ];
 
-    let month = null;
-    let y = null;
+    let currentDate = new Date()
+    let month = currentDate.getMonth();
+    let year = currentDate.getFullYear();;
     
 </script>
 
 <div class="body">
-    <MonthFilter bind:selectedMonth={month} bind:year={y}></MonthFilter>
+    <MonthFilter bind:selectedMonth={month} bind:year={year}></MonthFilter>
     <div class="main">
-        <h1>Dashboard: {month} {y}</h1>
+        <h1>Dashboard: {month + 1} {year}</h1>
         <div style="height: 30px; max-width: 389px; min-width: 341px">
             <ProgressBar dataSet={incomes} categoryList={category}/> 
         </div>

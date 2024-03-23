@@ -2,8 +2,8 @@
   import { ChevronLeft, ChevronRight } from "lucide-svelte";
   import SelectBox from "$lib/SelectBox.svelte";
 
-  export let selectedMonth = null;
-  export let year = null;
+  export let selectedMonth;
+  export let year;
 
   // Arrays for months and years 
   const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -12,13 +12,9 @@
   // Get current date
   let currentDate = new Date();
 
-  // Set default values
-  selectedMonth = selectedMonth !== null ? months[selectedMonth] : months[currentDate.getMonth()];
-  year = year !== null ? year : currentDate.getFullYear();
-
   // Function to change month
   function nextMonth() {
-    let newMonth = months.indexOf(selectedMonth);
+    let newMonth = selectedMonth;
     let newYear = year;
     newMonth = newMonth + 1;
     if (newMonth > 11) {
@@ -26,30 +22,29 @@
       newYear = newYear + 1;
     }
     if (currentDate.getFullYear() > newYear || (newYear === currentDate.getFullYear() && newMonth <= currentDate.getMonth())) {
-      selectedMonth = months[newMonth];
+      selectedMonth = newMonth;
       year = newYear;
     }
   }
 
   // Function to change month
   function prevMonth() {
-    let newMonth = months.indexOf(selectedMonth);
+    let newMonth = selectedMonth;
     let newYear = year;
     newMonth = newMonth - 1;
     if (newMonth < 0) {
       newMonth = 11;
       newYear = newYear - 1;
     }
-    selectedMonth = months[newMonth];
+    selectedMonth = newMonth;
     year = newYear;
   }
-
 </script>
 
 <div class="filter">
   <button on:click={prevMonth}><ChevronLeft size="{30}" strokeWidth="{3}" /></button>
   <div class="date" >
-    <SelectBox items={months} bind:selected={selectedMonth}></SelectBox>
+    <SelectBox items={months} bind:selected={months[selectedMonth]}></SelectBox>
     <SelectBox items={years} bind:selected={year}></SelectBox>
   </div>
   <button on:click={nextMonth}><ChevronRight size="{30}" strokeWidth="{3}" /></button>
