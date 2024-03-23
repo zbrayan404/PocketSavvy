@@ -7,19 +7,17 @@
 
   // Arrays for months and years 
   const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  const years = [2014, 2015, 2016, 2017, 2018 ,2019, 2020, 2021, 2022, 2023, 2024]
+  let years = [2014, 2015, 2016, 2017, 2018 ,2019, 2020, 2021, 2022, 2023, 2024];
 
   // Get current date
   let currentDate = new Date();
 
   // Function to change month
   function nextMonth() {
-    let newMonth = selectedMonth;
+    let newMonth = (selectedMonth + 1) % 12;
     let newYear = year;
-    newMonth = newMonth + 1;
-    if (newMonth > 11) {
-      newMonth = 0;
-      newYear = newYear + 1;
+    if (newMonth === 0) {
+      newYear++;
     }
     if (currentDate.getFullYear() > newYear || (newYear === currentDate.getFullYear() && newMonth <= currentDate.getMonth())) {
       selectedMonth = newMonth;
@@ -29,16 +27,26 @@
 
   // Function to change month
   function prevMonth() {
-    let newMonth = selectedMonth;
+    let newMonth = (selectedMonth - 1 + 12) % 12;
     let newYear = year;
-    newMonth = newMonth - 1;
-    if (newMonth < 0) {
-      newMonth = 11;
-      newYear = newYear - 1;
+    if (newMonth === 11) {
+      newYear--;
     }
     selectedMonth = newMonth;
     year = newYear;
   }
+
+  $ : {
+    if (!years.includes(year)) {
+      if (year < years[0]) {
+        let newYear = [year];
+        years = newYear.concat(years);
+      } else {
+        years.push(year);
+      }
+    } 
+  }
+
 </script>
 
 <div class="filter">
