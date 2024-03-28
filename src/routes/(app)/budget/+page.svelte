@@ -23,10 +23,14 @@
         return data.filter(item => item.type === type);
     }
 
+    let currentDate = new Date()
+    let month = currentDate.getMonth();
+    let year = currentDate.getFullYear();
+
 </script>
 
 <div class="body">
-    <MonthFilter></MonthFilter>
+    <MonthFilter bind:selectedMonth={month} bind:year={year}></MonthFilter>
     <div class="main">
         <h1>Budget</h1>
         <div class="overview">

@@ -20,7 +20,7 @@
 
     let currentDate = new Date()
     let month = currentDate.getMonth();
-    let year = currentDate.getFullYear();;
+    let year = currentDate.getFullYear();
     
 </script>
 
@@ -33,8 +33,6 @@
         </div>
 
         <Table dataSet={incomes} categoryList={category} header={['income', 'earned']}></Table>
-
-        <Table2 dataSet={incomes} categoryList={category} header={['earned']}></Table2>
     </div>
 </div>
 

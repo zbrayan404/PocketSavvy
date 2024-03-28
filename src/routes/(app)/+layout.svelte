@@ -1,14 +1,48 @@
 <script>
   import "/src/app.css";
   import { page } from '$app/stores';
-  import { AreaChart, Receipt, UserRoundCog, Menu } from 'lucide-svelte';
+  import { Menu } from 'lucide-svelte';
   import { onMount } from 'svelte';
 
   let navItems = [
-    { name: "Dashboard", path: "/dashboard", icon: AreaChart},
-    { name: "Budget", path: "/budget", icon: Receipt },
-    { name: "Settings", path: "/settings", icon: UserRoundCog},
+    { name: "Dashboard", path: "/dashboard",},
+    { name: "Budget", path: "/budget"},
   ];
+
+  let userButton;
+  let isUserMenuVisible = false;
+
+  function clickOutside(node, params){
+        function onClick(event){
+            if (!node.contains(event.target)
+                && !params.button.contains(event.target)){
+                    params.f()
+            } else {
+                console.log("")
+            }
+        }
+
+        window.addEventListener('click', onClick)
+
+        return{
+            destroy(){
+                window.removeEventListener('click', onClick);
+            }
+        }
+    }
+
+  let menuItems = [
+    {
+      'name': 'settings',
+      'path': '/settings',
+      'displayText': 'Settings',
+    },
+    {
+      'name': 'logout',
+      'path': '/logout',
+      'displayText': 'Logout',
+    }
+];
 
   let isMenuOpen = false;
 
@@ -47,6 +81,23 @@
 </script>
 
 <header class="header" class:open={isMenuOpen}>
+  <div>
+    <button class="user" on:click={() => isUserMenuVisible = true} bind:this={userButton}></button>
+      {#if isUserMenuVisible}
+        <div class="secondmenu" use:clickOutside={{
+          f: () => isUserMenuVisible = false,
+          button: userButton
+      }}>
+        {#each menuItems as item}
+          <a data-sveltekit-preload-data=off href={item.path} >
+            <button on:click={() => isUserMenuVisible = false}>
+              {item.displayText}
+            </button>
+          </a>
+        {/each}
+        </div>
+      {/if}
+  </div>  
   <h1 class="welcome-message">Hello, Brayan</h1>
   <nav class="navigation">
     <button class="menu-button" on:click={toggleMenu}>
@@ -55,7 +106,6 @@
     <div class="nav-list" class:open={isMenuOpen}>
       {#each navItems as item}
         <a href={item.path} class="nav-item" class:active={$page.url.pathname.startsWith(item.path)}>
-          <span class="icon-nav"><svelte:component this={item.icon} size={24}/></span>
           <span class="name">{item.name}</span>
         </a>
       {/each}
@@ -85,16 +135,18 @@
     padding: 0px 5% 0px 5%;
     height: 70px;
     border-bottom: 2px dotted var(--white);
+    z-index: 1;
   }
 
   .welcome-message {
-    text-align: center;
     color: var(--white);
     letter-spacing: 2px;
     font-family: 'Iosevka', sans-serif;
-    font-size: calc(1rem + 1vw);
+    font-size: 30px;
     text-overflow: ellipsis;
     overflow: hidden;
+    white-space: nowrap;
+    flex: 1 0 auto;
   }
 
   .navigation {
@@ -115,17 +167,13 @@
   }
 
   .nav-item {
-    font-family: Iosevka, sans-serif;
+    font-family: 'Iosevka', sans-serif;
     text-decoration: dashed underline 3px;
     text-underline-offset: 8px;
     display: flex;
     align-items: center;
     gap: 10%;
-  }
-
-  .nav-item {
     height: 45px;
-    color: var(--gray);
     padding: 0px 15px;
     font-weight: bold;
     cursor: pointer;
@@ -136,8 +184,6 @@
     z-index: 0;
     background: var(--gray);
     overflow: hidden;
-    color: var(--white);
-    justify-content: space-evenly;
   }
   .nav-item:hover {
     color: var(--gray);;
@@ -157,15 +203,40 @@
     background: var(--green);
   }
 
+  .user{
+    width: 45px;
+    height: 45px;
+    background-color: var(--green);
+    border-radius: 11.42px;
+  }
+  .secondmenu{
+    color: var(--white);
+    letter-spacing: 2px;
+    font-family: 'Iosevka', sans-serif;
+    background-color: var(--gray);
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    box-shadow: 1.9px 3.81px 0px var(--white);
+    padding: 0px 10px;
+    font-size: 1rem;
+    border-radius: 0 0px 11.42px 11.42px;
+    border: 2px solid;
+    border-top: none;
+  }
+
+  .secondmenu button{
+    width: 100%;
+    height: 35px;
+    min-width: 100px;
+    text-align: left;
+  }
   .icon {
     padding-top: 5.4%;
     color: var(--white);
   }
-
-  .icon-nav {
-    padding-top: 4.4%;
-  }
-
 
   .active {
     color: var(--green);
@@ -205,6 +276,17 @@
   @media (max-width: 814px) {
     .menu-button {
       display: block;
+    }
+
+    .welcome-message {
+      font-size: 25px;
+      min-width: 235px;
+      text-align: center;
+    }
+
+    .user {
+      width: 35px;
+      height: 35px;
     }
 
     .nav-list {

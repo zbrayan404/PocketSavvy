@@ -104,7 +104,7 @@
     .body-page {
         position: relative;
 		display: flex;
-        height: 864px;
+        height: 700px;
 		width: 100%;
 		justify-content: center;
 		align-items: center;
