@@ -1,18 +1,25 @@
 <script>
-    import { page } from '$app/stores';
+  import { page } from '$app/stores';
+
+  export let data;
+
+  let currentDate = new Date()
+  let month = currentDate.getMonth() + 1; 
+  let year = currentDate.getFullYear();
+  month = parseInt(month) < 10 ? "0" + month : "" + month;
   
-    let navItems = [
-      { name: "Monthly", path: "/dashboard", icon: "dashboard" },
-      { name: "Yearly", path: "/dashboard/yearly", icon: "budget" },
-    ];
+  let navItems = [
+    { name: "Monthly", path: "/dashboard/" + year + "/" + month},
+    { name: "Yearly", path: "/dashboard/" + year},
+  ];
   
-  </script>
+</script>
   
   <header class="header">
     <nav class="navigation">
       <div class="nav-list">
         {#each navItems as item}
-          <a href={item.path} class="nav-item" class:active={$page.url.pathname == item.path}>{ item.name}</a>
+          <a data-sveltekit-preload-data=off href={item.path} class="nav-item" class:active={data.active == item.name}>{ item.name }</a>
         {/each}
       </div>
     </nav>

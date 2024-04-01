@@ -1,5 +1,8 @@
 <script>
   import { onMount } from "svelte";
+  import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
 
   export let items = []; 
   export let selected = null; 
@@ -35,6 +38,9 @@
     const value = event.target.value;
     selected = isNaN(value) ? value : parseInt(value);
     this.blur(); 
+    dispatch('update', {
+			select: selected,
+		});
   }
 
   // Function to handle focus on the select element

@@ -1,8 +1,7 @@
 <script>
 	import { tweened } from "svelte/motion";
 	
-	export let dataSet = [];
-	export let categoryList = [];
+	export let data = [];
 	export let budgetTotal = null;
   
 	// Calculate total value for scaling
@@ -10,25 +9,19 @@
   
 	function calculateTotal(property) {
 		let total = 0;
-		dataSet.forEach((item) => {
+		data.forEach((item) => {
 			total += item[property];
 		});
 		return total;
 	}
   
 	// Sort the data array by value (largest to smallest)
-	$: sortedData = dataSet.slice().sort((a, b) => b.current - a.current);
+	$: sortedData = data.slice().sort((a, b) => b.current - a.current);
   
 	// Function to calculate percentage width for each segment
 	const getPercentage = (value) => {
 	  return (value / total) * 100 + "%";
 	};
-
-	// Function to get color for category
-	const getColorForCategory = (categoryName) => {
-        const foundCategory = categoryList.find(item => item.category === categoryName);
-        return foundCategory ? foundCategory.color : 'black';
-    };
 
 	// Tweened progress bar
 	const progress = tweened(0, {
@@ -42,10 +35,10 @@
   
   <div class="progress-bar">
 	<div class="progress" style="width: {$progress}%">
-		{#each sortedData as { category, current }}
+		{#each sortedData as { category, current, color }}
 			<div
 			class="progress-segment"
-			style="background-color: {getColorForCategory(category)}; width: {getPercentage(current)};"
+			style="background-color: {color}; width: {getPercentage(current)};"
 			role="progressbar"
 			aria-valuenow={getPercentage(current)}
 			aria-valuemin="0"

@@ -1,23 +1,34 @@
 <script>
     import ProgressBar from "./ProgressBar.svelte";
 
-    export let dataSet = [];
-	export let categoryList = [];
-    export let header = [];
+    export let data = [];
+    export let type = '';
     
+    let header = tableHeader(type);
+
     // Calculate total value for scaling
     const calculatePercentage = (current, budget) => {
       return ((current / budget) * 100).toFixed(2);
     };
 
     // Sort the data array by value (largest to smallest)
-    let maxAmount = Math.max(...dataSet.map(item => item.current));
+    let maxAmount = Math.max(...data.map(item => item.current));
     let maxDigits = maxAmount.toFixed(2).length;
 
     // Function to calculate dollar padding
     const dollarPadding = (amount) => {
         return maxDigits - amount.toFixed(2).length + 1;
     }; 
+
+    function tableHeader(type){
+        if (type === 'Income') {
+            return ['incomes', 'earned'];
+        } else if (type === 'Expense') {
+            return ['expenses', 'spent'];
+        } else {
+            return ['savings', 'saved'];
+        }
+    };
     
 </script>
   
@@ -31,12 +42,12 @@
             </tr>
         </thead>
         <tbody>
-            {#each dataSet as { category, current, budget }}
+            {#each data as { category, current, budget, color }}
             <tr class="category-overview" key={category}>
                 <td class="category-title">{category}</td>
                 <td class="progress-bar">
                     <div class="progress">
-                        <ProgressBar dataSet={[{ category: category, current: current }]} categoryList={ categoryList } budgetTotal={ budget } />
+                        <ProgressBar data={[{ category: category, current: current, color: color }]} budgetTotal={ budget } />
                     </div>
                     <p class="percentage-text">{calculatePercentage(current, budget)}%</p>
                 </td>

@@ -4,9 +4,15 @@
   import { Menu } from 'lucide-svelte';
   import { onMount } from 'svelte';
 
+  let currentDate = new Date()
+  let month = currentDate.getMonth() + 1; 
+  let year = currentDate.getFullYear();
+
+  month = parseInt(month) < 10 ? "0" + month : "" + month;
+
   let navItems = [
-    { name: "Dashboard", path: "/dashboard",},
-    { name: "Budget", path: "/budget"},
+    { name: "Dashboard", path: "/dashboard/" + year + "/" + (month), base: "/dashboard"},
+    { name: "Budget", path: "/budget", base: "/budget"},
   ];
 
   let userButton;
@@ -29,7 +35,7 @@
                 window.removeEventListener('click', onClick);
             }
         }
-    }
+  }
 
   let menuItems = [
     {
@@ -105,7 +111,7 @@
     </button>
     <div class="nav-list" class:open={isMenuOpen}>
       {#each navItems as item}
-        <a href={item.path} class="nav-item" class:active={$page.url.pathname.startsWith(item.path)}>
+        <a href={item.path} class="nav-item" class:active={$page.url.pathname.startsWith(item.base)}>
           <span class="name">{item.name}</span>
         </a>
       {/each}

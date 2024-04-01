@@ -1,6 +1,8 @@
 <script>
   import { ChevronLeft, ChevronRight } from "lucide-svelte";
   import SelectBox from "$lib/SelectBox.svelte";
+  import { page } from "$app/stores";
+  import { goto } from "$app/navigation";
 
   export let selectedMonth;
   export let year;
@@ -8,6 +10,8 @@
   // Arrays for months and years 
   const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   let years = [2014, 2015, 2016, 2017, 2018 ,2019, 2020, 2021, 2022, 2023, 2024];
+
+  let month = months[selectedMonth];
 
   // Get current date
   let currentDate = new Date();
@@ -22,6 +26,7 @@
     if (currentDate.getFullYear() > newYear || (newYear === currentDate.getFullYear() && newMonth <= currentDate.getMonth())) {
       selectedMonth = newMonth;
       year = newYear;
+      updateSearchParams((selectedMonth + 1).toString(), year.toString());
     }
   }
 
@@ -34,6 +39,7 @@
     }
     selectedMonth = newMonth;
     year = newYear;
+    updateSearchParams((selectedMonth + 1).toString(), year.toString());
   }
 
   $ : {
@@ -45,15 +51,50 @@
         years.push(year);
       }
     } 
+  } 
+
+  $ : {
+    month = months[selectedMonth]
   }
+
+  const updateSearchParams = (newMonth, newYear) => {
+    const url = new URL($page.url.pathname, location.href);
+    let monthParams = parseInt(newMonth) < 10 ? "0" + newMonth : "" + newMonth;
+    let yearParams = newYear.toString();
+
+    // Update the search parameters in the URL
+    const parts = url.pathname.split('/');
+    const yearIndex = parts.findIndex(item => item.length === 4);
+    const monthIndex = parts.findIndex(item => item.length === 2);
+    
+    if (yearIndex !== -1 && monthIndex !== -1) {
+      // If year and month params already exist in the URL, update them
+      parts.splice(yearIndex, 2, yearParams, monthParams);
+    } else {
+      // If year and month params don't exist, add them
+      parts.push(yearParams, monthParams);
+    }
+
+    url.pathname = parts.join('/');
+    goto(url.pathname);
+  };
+
+  function handleUpdateMonth(event) {
+    selectedMonth = months.indexOf(event.detail.select);
+    updateSearchParams((selectedMonth + 1).toString(), year.toString());
+  }   
+
+  function handleUpdateYear(event) {
+    updateSearchParams((selectedMonth + 1).toString(), (event.detail.select).toString());
+  }  
 
 </script>
 
 <div class="filter">
   <button on:click={prevMonth}><ChevronLeft size="{30}" strokeWidth="{3}" /></button>
   <div class="date" >
-    <SelectBox items={months} bind:selected={months[selectedMonth]}></SelectBox>
-    <SelectBox items={years} bind:selected={year}></SelectBox>
+    <SelectBox on:update={handleUpdateMonth} items={months} bind:selected={month}></SelectBox>
+    <SelectBox  on:update={handleUpdateYear} items={years} bind:selected={year}></SelectBox>
   </div>
   <button on:click={nextMonth}><ChevronRight size="{30}" strokeWidth="{3}" /></button>
 </div>

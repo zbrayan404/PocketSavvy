@@ -1,38 +1,36 @@
 <script>
     import ProgressBar from '$lib/ProgressBar.svelte';
     import Table from '$lib/Table.svelte';
-    import Table2 from '$lib/Table2.svelte';
     import MonthFilter from '$lib/MonthFilter.svelte';
 
+    export let data;
+
+    let month;
+    let year;
+
+    $ : {
+        month = data.month - 1;
+        year = data.year;
+    }
+
     let incomes = [
-        { category: 'Employment', current: 3500.00, budget: 3500.00 },
-        { category: 'Side Hustle', current: 560.00, budget: 1000.00 },
-        { category: 'Investments', current: 180.00, budget: 300.00},
-        { category: 'Other', current: 12.40, budget: 150.00}
+        { category: 'Employment', current: 3500.00, budget: 3500.00, color: 'blue'},
+        { category: 'Side Hustle', current: 560.00, budget: 1000.00, color: 'green'},
+        { category: 'Investments', current: 180.00, budget: 300.00, color: 'red'},
+        { category: 'Other', current: 12.40, budget: 150.00, color: 'yellow'}
     ];
-
-    let category = [
-        {category: 'Employment', color: 'blue'},
-        {category: 'Side Hustle', color: 'green'},
-        {category: 'Investments', color: 'red'},
-        {category: 'Other', color: 'yellow'}
-    ];
-
-    let currentDate = new Date()
-    let month = currentDate.getMonth();
-    let year = currentDate.getFullYear();
     
 </script>
 
 <div class="body">
     <MonthFilter bind:selectedMonth={month} bind:year={year}></MonthFilter>
     <div class="main">
-        <h1>Dashboard: {month + 1} {year}</h1>
+        <h1>Dashboard:</h1>
         <div style="height: 30px; max-width: 389px; min-width: 341px">
-            <ProgressBar dataSet={incomes} categoryList={category}/> 
+            <ProgressBar data={incomes}/> 
         </div>
 
-        <Table dataSet={incomes} categoryList={category} header={['income', 'earned']}></Table>
+        <Table data={incomes} type={"Income"}></Table>
     </div>
 </div>
 
@@ -66,7 +64,3 @@
         font-size: 40px;
     }
 </style>
-
-
-
-  

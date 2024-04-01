@@ -1,12 +1,12 @@
 <script>
   import "/src/app.css";
   import { page } from '$app/stores';
-  import { AreaChart, Receipt, Menu } from 'lucide-svelte';
+  import { Menu } from 'lucide-svelte';
   import { onMount } from 'svelte';
 
   let navItems = [
-    { name: "Login", path: "/login", icon: AreaChart},
-    { name: "SignUp", path: "/register", icon: Receipt },
+    { name: "Login", path: "/login"},
+    { name: "Register", path: "/register"},
   ];
 
   let isMenuOpen = false;
@@ -46,6 +46,9 @@
 </script>
 
 <header class="header" class:open={isMenuOpen}>
+  <div class="logo">
+
+  </div>
   <h1 class="welcome-message">Welcome</h1>
   <nav class="navigation">
     <button class="menu-button" on:click={toggleMenu}>
@@ -54,7 +57,6 @@
     <div class="nav-list" class:open={isMenuOpen}>
       {#each navItems as item}
         <a href={item.path} class="nav-item" class:active={$page.url.pathname.startsWith(item.path)}>
-          <span class="icon-nav"><svelte:component this={item.icon} size={24}/></span>
           <span class="name">{item.name}</span>
         </a>
       {/each}
@@ -86,13 +88,14 @@
   }
 
   .welcome-message {
-    text-align: center;
     color: var(--white);
     letter-spacing: 2px;
     font-family: 'Iosevka', sans-serif;
-    font-size: calc(1rem + 1vw);
+    font-size: 30px;
     text-overflow: ellipsis;
     overflow: hidden;
+    white-space: nowrap;
+    flex: 1 0 auto;
   }
 
   .navigation {
@@ -109,19 +112,14 @@
     color: var(--white);
     letter-spacing: 1.25px;
   }
-
   .nav-item {
-    font-family: Iosevka, sans-serif;
+    font-family: 'Iosevka', sans-serif;
     text-decoration: dashed underline 3px;
     text-underline-offset: 8px;
     display: flex;
     align-items: center;
     gap: 10%;
-  }
-
-  .nav-item {
     height: 45px;
-    color: var(--gray);
     padding: 0px 15px;
     font-weight: bold;
     cursor: pointer;
@@ -132,8 +130,6 @@
     z-index: 0;
     background: var(--gray);
     overflow: hidden;
-    color: var(--white);
-    justify-content: space-evenly;
   }
   .nav-item:hover {
     color: var(--gray);;
@@ -153,22 +149,21 @@
     background: var(--green);
   }
 
+  .logo{
+    width: 45px;
+    height: 45px;
+    background-color: var(--green);
+    border-radius: 11.42px;
+  }
   .icon {
     padding-top: 5.4%;
     color: var(--white);
   }
-
-  .icon-nav {
-    padding-top: 4.4%;
-  }
-
-
   .active {
     color: var(--green);
     text-decoration: solid underline 3px;
     text-underline-offset: 8px;
   }
-
   .menu-button {
     display: none;
     background: none;
@@ -201,6 +196,17 @@
   @media (max-width: 814px) {
     .menu-button {
       display: block;
+    }
+
+    .welcome-message {
+      font-size: 25px;
+      min-width: 235px;
+      text-align: center;
+    }
+
+    .logo {
+      width: 35px;
+      height: 35px;
     }
 
     .nav-list {
