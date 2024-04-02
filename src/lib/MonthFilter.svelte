@@ -23,11 +23,9 @@
     if (newMonth === 0) {
       newYear++;
     }
-    if (currentDate.getFullYear() > newYear || (newYear === currentDate.getFullYear() && newMonth <= currentDate.getMonth())) {
-      selectedMonth = newMonth;
-      year = newYear;
-      updateSearchParams((selectedMonth + 1).toString(), year.toString());
-    }
+    selectedMonth = newMonth;
+    year = newYear;
+    updateSearchParams((selectedMonth + 1).toString(), year.toString());
   }
 
   // Function to change month

@@ -8,29 +8,38 @@
     let month;
     let year;
 
+    const type = ['Income', 'Expense', 'Saving']
+
     $ : {
         month = data.month - 1;
         year = data.year;
     }
 
-    let incomes = [
-        { category: 'Employment', current: 3500.00, budget: 3500.00, color: 'blue'},
-        { category: 'Side Hustle', current: 560.00, budget: 1000.00, color: 'green'},
-        { category: 'Investments', current: 180.00, budget: 300.00, color: 'red'},
-        { category: 'Other', current: 12.40, budget: 150.00, color: 'yellow'}
-    ];
+    function sortByType(type, dataset) {
+        return dataset.filter(item => item.type === type);
+    }
     
 </script>
 
 <div class="body">
-    <MonthFilter bind:selectedMonth={month} bind:year={year}></MonthFilter>
+    <div class="month">
+        <MonthFilter bind:selectedMonth={month} bind:year={year}></MonthFilter>
+    </div>
     <div class="main">
         <h1>Dashboard:</h1>
-        <div style="height: 30px; max-width: 389px; min-width: 341px">
-            <ProgressBar data={incomes}/> 
-        </div>
-
-        <Table data={incomes} type={"Income"}></Table>
+        {#if data.budgets.length === 0}
+            <p class="no-data">No Data Available</p>
+        {:else}
+            <div style="height: 30px; max-width: 389px; min-width: 341px">
+                <ProgressBar data={data.budgets}/> 
+            </div>
+            <div class="tables">
+                <Table data={sortByType(type[0], data.budgets)} type={type[0]}></Table>
+                <Table data={sortByType(type[1], data.budgets)} type={type[1]}></Table>
+                <Table data={sortByType(type[2], data.budgets)} type={type[2]}></Table>
+            </div>
+        {/if}
+        
     </div>
 </div>
 
@@ -44,8 +53,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        width: 100vw;
+        height: 800px;
+        width: 100%;
         flex-direction: column;
     }
     .main {
@@ -63,4 +72,29 @@
         font-family: 'Iosevka', sans-serif;
         font-size: 40px;
     }
+    .tables {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        min-width: 341px;
+        justify-content: space-between
+    }
+    .month{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+    .no-data {
+        font-size: 50px;
+        font-family: 'Iosevka', sans-serif;
+        color: var(--green);
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding-top: 110px;
+    }
+
 </style>

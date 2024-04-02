@@ -2,7 +2,7 @@ import { error } from "@sveltejs/kit";
 
 export async function load({ locals, params }) {
   if (!isYear(params.year)) {
-    error(404, "Not found");
+    error(404, "Not Found");
   }
 
   function isYear(input) {

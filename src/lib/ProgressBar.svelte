@@ -1,9 +1,9 @@
 <script>
 	import { tweened } from "svelte/motion";
-	
+
 	export let data = [];
 	export let budgetTotal = null;
-  
+
 	// Calculate total value for scaling
 	let total = budgetTotal !== null ? budgetTotal : calculateTotal("budget");
   
@@ -20,7 +20,7 @@
   
 	// Function to calculate percentage width for each segment
 	const getPercentage = (value) => {
-	  return (value / total) * 100 + "%";
+		return (value / total) * 100 + "%";
 	};
 
 	// Tweened progress bar
@@ -46,7 +46,7 @@
 			aria-label={`Category: ${category}`}
 			></div>
 		{/each}
-	</div>	
+	</div> 
   </div>
   
   <style>
@@ -56,28 +56,27 @@
       --green: #02cd8c;
     }
 	.progress-bar {
-	  display: flex;
-	  overflow: hidden;
-	  border-radius: 22.833px;
-	  background-color: var(--white);
-	  border: 2px solid var(--white);
-	  height: 100%;
-	  position: relative;
-	  background-clip: border-box;
+		display: flex;
+		overflow: hidden;
+		border-radius: 22.833px;
+		background-color: var(--white);
+		border: 2px solid var(--white);
+		height: 100%;
+		position: relative;
+		background-clip: border-box;
 	}
 	.progress {
-	  display: flex;
-	  height: 100%;
-	  width: 100%;
-	  position: relative;
-	  background-clip: padding-box;
+		display: flex;
+		height: 100%;
+		width: 100%;
+		position: relative;
+		background-clip: padding-box;
 	}
 	.progress-segment {
-	  height: 100%;
-	  position: relative;
+		height: 100%;
+		position: relative;
 	}
 	.progress-segment:last-child {
-	  border-radius: 0px 22.833px 22.833px 0px;
+		border-radius: 0px 22.833px 22.833px 0px;
 	}
   </style>
-  

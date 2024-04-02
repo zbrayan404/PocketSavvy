@@ -1,24 +1,10 @@
 <script>
-    import ProgressBar from '$lib/ProgressBar.svelte';
-    import Table from '$lib/Table.svelte';
-    import YearFilter from '$lib/YearFilter.svelte';
-
-    export let data;
-
-    let year;
-
-    $ : {
-        year = data.year;
-    }
-    
+    import { page } from '$app/stores';
 </script>
 
 <div class="body">
-    <div class="year">
-        <YearFilter  bind:year={year} ></YearFilter>
-    </div>
     <div class="main">
-        <h1>Dashboard:</h1>
+        <h1>{$page.error.message}</h1>
     </div>
 </div>
 
@@ -28,15 +14,12 @@
       --white: #f5f7fa;
       --green: #02cd8c;
     }
-    :global(body) {
-        background-color: var(--black);
-    }
     .body {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        width: 100vw;
+        height: 700px;
+        width: 100%;
         flex-direction: column;
     }
     .main {
@@ -52,13 +35,8 @@
     h1 {
         letter-spacing: 0.6px;
         font-family: 'Iosevka', sans-serif;
-        font-size: 40px;
-    }
-    .year {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
+        font-size: 60px;
+        text-align: center;
+        color: var(--green);
     }
 </style>

@@ -4,6 +4,8 @@
   import { Menu } from 'lucide-svelte';
   import { onMount } from 'svelte';
 
+  export let data;
+
   let currentDate = new Date()
   let month = currentDate.getMonth() + 1; 
   let year = currentDate.getFullYear();
@@ -88,7 +90,13 @@
 
 <header class="header" class:open={isMenuOpen}>
   <div>
-    <button class="user" on:click={() => isUserMenuVisible = true} bind:this={userButton}></button>
+    <button on:click={() => isUserMenuVisible = true} bind:this={userButton}>
+      {#if data.avatar}
+        <img src={data.avatar} class='user' border=0 alt="avatar"/>
+      {:else}
+        <div class="user" style="background-color: var(--green)"></div>
+      {/if}
+    </button>
       {#if isUserMenuVisible}
         <div class="secondmenu" use:clickOutside={{
           f: () => isUserMenuVisible = false,
@@ -104,7 +112,7 @@
         </div>
       {/if}
   </div>  
-  <h1 class="welcome-message">Hello, Brayan</h1>
+  <h1 class="welcome-message">Hello, {data.name}</h1>
   <nav class="navigation">
     <button class="menu-button" on:click={toggleMenu}>
       <span class="icon"><Menu size={32} /></span>
@@ -153,6 +161,7 @@
     overflow: hidden;
     white-space: nowrap;
     flex: 1 0 auto;
+    min-width: 235px;
   }
 
   .navigation {
@@ -208,12 +217,12 @@
     width: 100%;
     background: var(--green);
   }
-
   .user{
     width: 45px;
     height: 45px;
-    background-color: var(--green);
     border-radius: 11.42px;
+    color: var(--white);
+    border: 2px solid;
   }
   .secondmenu{
     color: var(--white);
@@ -286,7 +295,7 @@
 
     .welcome-message {
       font-size: 25px;
-      min-width: 235px;
+      width: 235px;
       text-align: center;
     }
 

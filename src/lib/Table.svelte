@@ -66,7 +66,7 @@
     }
     .section {
         display: block;
-        max-width: 389px;
+        width: 389px;
         min-width: 341px;
         overflow: auto;
     }
@@ -107,7 +107,7 @@
         text-align: right; 
         white-space: nowrap; 
         padding-right: 15px; 
-
+        min-width: 75px;
     }
     .title-header,
     .category-title {
