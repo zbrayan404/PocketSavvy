@@ -1,6 +1,6 @@
 <div class="body">
     <div class="main">
-        <h1>Settings</h1>
+        <h1>Accounts</h1>
     </div>
 </div>
 
