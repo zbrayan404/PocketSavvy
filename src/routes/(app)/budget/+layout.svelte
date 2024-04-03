@@ -2,18 +2,18 @@
     import { page } from '$app/stores';
   
     let navItems = [
-      { name: "Budget", path: "/budget", icon: "dashboard" },
-      { name: "Transactions", path: "/budget/transactions", icon: "budget" },
-      { name: "Recurring", path: "/budget/recurring", icon: "settings" },
+      { name: "Budget", path: "/budget"},
+      { name: "Transactions", path: "/budget/transactions", },
+      { name: "Recurring", path: "/budget/recurring"}
     ];
-  
+
   </script>
   
   <header class="header">
     <nav class="navigation">
       <div class="nav-list">
         {#each navItems as item}
-          <a href={item.path} class="nav-item" class:active={$page.url.pathname == item.path}>{ item.name}</a>
+          <a href={item.path} class="nav-item" class:active={$page.url.pathname.replace(/\/\d{4}\/\d{2}/, '') == item.path}>{ item.name}</a>
         {/each}
       </div>
     </nav>

@@ -4,9 +4,7 @@
 
 <div class="body">
     <div class="main">
-        <div class="error">
-            <h1>{$page.error.message}</h1>
-        </div>
+        <h1>{$page.error.message}</h1>
     </div>
 </div>
 
@@ -20,7 +18,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 86vh;
+        height: 700px;
         width: 100%;
         flex-direction: column;
     }
@@ -38,12 +36,8 @@
         letter-spacing: 0.6px;
         font-family: 'Iosevka', sans-serif;
         font-size: 60px;
+        text-align: center;
         color: var(--green);
-    }
-    .error {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
+        padding-top: 220px;
     }
 </style>

@@ -2,7 +2,6 @@
     import { MoreHorizontal } from 'lucide-svelte';
 
     export let dataSet = [];
-    export let categoryList = [];
     export let header = [];
 
     // Calculate difference between budget and current
@@ -16,6 +15,7 @@
             category: item.category,
             current: item.current,
             budget: item.budget,
+            color: item.color,
             difference: calculateDifference(item.budget, item.current)
         };
     });
@@ -27,16 +27,6 @@
         return maxDigits - amount.toFixed(2).length + 1;
     };
 
-    // Function to get color for category
-    const getColorForCategory = (categoryName) => {
-        const foundCategory = categoryList.find(item => item.category === categoryName);
-        return foundCategory ? foundCategory.color : 'black';
-    };
-
-    // Filter dataSet based on categoryList
-    const filteredData = dataSet.filter(item => {
-        return categoryList.some(category => category.category === item.category);
-    });
 </script>
 
 <section class="section">
@@ -51,11 +41,11 @@
             </tr>
         </thead>
         <tbody>
-            {#each filteredData as { category, current, budget, difference }}
+            {#each dataSet as { category, current, budget, color, difference }}
             <tr class="category-overview" key={category}>
                 <td class="category-title">
                     <div class="category">
-                        <div class="category-indicator" style="background-color: {getColorForCategory(category)}"></div>
+                        <div class="category-indicator" style="background-color: {color}"></div>
                         <span class="title">{category}</span>
                     </div>
                 </td>

@@ -3,11 +3,16 @@
     import Table2 from '$lib/Table2.svelte';
     import Budget1 from '$lib/Budget.svelte';
 
+    export let data;
+
+    let month;
+    let year;
+
     let incomes = [
-        { category: 'Employment', current: 3500.00, budget: 3500.00 },
-        { category: 'Side Hustle', current: 560.00, budget: 1000.00 },
-        { category: 'Investments', current: 180.00, budget: 300.00},
-        { category: 'Other', current: 12.40, budget: 150.00}
+        { category: 'Employment', current: 3500.00, budget: 3500.00, color: 'blue' },
+        { category: 'Side Hustle', current: 560.00, budget: 1000.00, color: 'green' },
+        { category: 'Investments', current: 180.00, budget: 300.00, color: 'red'},
+        { category: 'Other', current: 12.40, budget: 150.00, color: 'yellow'}
     ];
 
     let category = [
@@ -23,9 +28,10 @@
         return data.filter(item => item.type === type);
     }
 
-    let currentDate = new Date()
-    let month = currentDate.getMonth();
-    let year = currentDate.getFullYear();
+    $ : {
+        month = data.month - 1;
+        year = data.year;
+    }
 
 </script>
 
@@ -40,7 +46,7 @@
                         <h2>{type}</h2>
                         <div class="table">
                             <div class="indent"></div>
-                            <Table2 dataSet={incomes} categoryList={filterType(category, type)} header={['earned']}></Table2>
+                            <Table2 dataSet={incomes} header={['earned']}></Table2>
                         </div>
                     </div>
 	            {/each}

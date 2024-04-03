@@ -24,7 +24,6 @@ export async function load({ locals, params }) {
         budget: record.budget,
         id: record.id,
       }));
-      console.log("Processed data:", data);
       return data;
     } catch (error) {
       console.error("Error fetching budgets:", error);
