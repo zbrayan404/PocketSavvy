@@ -3,7 +3,7 @@
 	import type { ActionData } from "./$types";
     import { EyeOff, Eye } from 'lucide-svelte';
 
-	const log = debug("app:routes:login:page.svelte");
+	const log = debug("app:routes:profile:page.svelte");
 
 	export let form: ActionData;
 
@@ -28,15 +28,16 @@
         >
             {#if form?.error}<p class="error">Invalid credentials!</p>{/if}
             <div>
-                <label for="old password">Old Password</label>
+                <label for="password">Password</label>
                 <input
-                    autocomplete="old password"
+                    bind:value={password}
+                    autocomplete="password"
                     autocorrect="off"
                     type="text"
-                    name="old password"
-                    placeholder="Old Password..."
+                    id="password"
+                    name="password"
+                    placeholder="Password..."
                     required
-                    value={form?.oldPassword ?? ""}
                 />
             </div>
             <div>
