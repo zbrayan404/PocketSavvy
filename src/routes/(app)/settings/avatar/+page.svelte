@@ -1,6 +1,8 @@
 <div class="body">
     <div class="main">
         <h1>Avatar</h1>
+
+        <button onclick="">Change Avatar</button>
     </div>
 </div>
 
