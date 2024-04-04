@@ -1,72 +1,53 @@
-<div class="body-page">
-    <section class='card'>
-        <div class="prose">
-            <h1>Accounts</h1>
+<script>
+    function add_account() {
+        console.log('This button is at least clicking')
+    }
+    function change_account() {
+        console.log('Change Account')
+    }
+</script>
+
+<div class="body">
+    <div class="main">
+        <h1>Accounts</h1>
+        <div>
+            <button on:click={add_account}>Add Account</button>
+            <button on:click={change_account}>Change Account</button>
         </div>
-        <form
-            class="flex flex-col gap-4 my-6"
-            method="POST"
-            action="?/login"
-        >
-            <div>
-            <button onclick="">Change To Checking</button>
-            <button onclick="">Change To Savings</button>
-            </div>
-    </section>
+    </div>
 </div>
+
 
 <style>
     :global(:root) {
-      --gray: #17253e;
-      --white: #f5f7fa;
-      --green: #02cd8c;
-    }
-    .body-page {
-        position: relative;
-		display: flex;
-		width: 100%;
-        height: 90vh;
-		justify-content: center;
-		align-items: center;
-    }
-    .card {
-        background-color: var(--gray);
-        color: var(--white);
-        border-radius: 11.83px;
-        border: 2px solid;
-        width: 35%;
-		position: relative;
-		padding: 5%;
-        padding-top: 2.5rem;
-        padding-bottom: 0;
-        min-width: 300px;
-    }
-    .card form input {
-        background-color: var(--gray);
-        color: var(--white);
-        border-radius: 11.83px;
-		padding: 0.5rem;
-		background-clip: padding-box;
-        border: 2px solid;
-        letter-spacing: 0.6px;
-		font-family: 'Iosevka', sans-serif;
-        font-size: 1.0rem;
-        width: 100%;
-	}
-
-    .card form .input-wrapper {
-        position: relative;
-    }
-    .card form .visiblity { 		
-        height: 32px;
-        width: 32px;
-        box-shadow: none;
-        position: absolute;
-        top: 6px;
-        right: 6px;
-        opacity: 0.33;
-    }
-    .card form button {
+       --gray: #17253e;
+       --white: #f5f7fa;
+       --green: #02cd8c;
+     }
+     .body {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: 100vh;
+         width: 100vw;
+         flex-direction: column;
+     }
+     .main {
+         width: 99%;
+         height: 100%;
+         background-color: var(--gray);
+         color: var(--white);
+         border-radius: 22.83px;
+         background-clip: padding-box;
+         border: 2px solid;
+         padding: 3.5%;
+     }
+     h1 {
+         letter-spacing: 0.6px;
+         font-family: 'Iosevka', sans-serif;
+         font-size: 40px;
+     }
+    button {
 		cursor: pointer;
 		display: flex;
 		flex-direction: row;
@@ -78,7 +59,7 @@
 		line-height: 1;
 		color: var(--white);
 		font-size: 18px;
-		width: 100%;
+		width: 30%;
 		height: 55px;
 		font-weight: bold;
 		border: 2px solid;
@@ -87,41 +68,9 @@
 		background-color: var(--gray);
 		border-radius: 11.83px;
 	}
-    .card form button:hover {
+    button:hover {
 		box-shadow: 0 0 black;
 		color: var(--gray);
 		background-color: var(--white);
 	}
-    .card h1 {
-        letter-spacing: 0.6px;
-        font-family: 'Iosevka', sans-serif;
-        font-size: 2rem;
-		margin: 0;
-		text-align: center;
-    }
-    .card form {
-		display: flex;
-		flex-direction: column;
-		font-family: 'Iosevka', sans-serif;
-	}
-    .card form label {
-		font-family: 'Iosevka', sans-serif;
-		font-size: 1.2rem;
-		padding-bottom: 1rem;
-	}
-    .card a {
-        color: var(--green);
-        letter-spacing: 0.6px;
-        font-family: 'Iosevka', sans-serif;
-        font-size: 1.2rem;
-    }
-    @media (max-width: 1250px) {
-		.card {
-			width: 60%;
-		}
-
-		.card form input {
-			font-size: 1.25rem;
-		}
-	}
-</style>
+ </style>

@@ -1,3 +1,15 @@
+<script>
+    let user_avatar;
+
+    if (user_avatar) {
+        console.log(user_avatar)
+        console.log('${user_avatar.name}: ${user_avatar.size} bytes')
+    }
+    function change_avatar() {
+
+    }
+</script>
+
 <div class="body-page">
     <section class='card'>
         <div class="prose">
@@ -40,31 +52,6 @@
         padding-bottom: 0;
         min-width: 300px;
     }
-    .card form input {
-        background-color: var(--gray);
-        color: var(--white);
-        border-radius: 11.83px;
-		padding: 0.5rem;
-		background-clip: padding-box;
-        border: 2px solid;
-        letter-spacing: 0.6px;
-		font-family: 'Iosevka', sans-serif;
-        font-size: 1.0rem;
-        width: 100%;
-	}
-
-    .card form .input-wrapper {
-        position: relative;
-    }
-    .card form .visiblity { 		
-        height: 32px;
-        width: 32px;
-        box-shadow: none;
-        position: absolute;
-        top: 6px;
-        right: 6px;
-        opacity: 0.33;
-    }
     .card form button {
 		cursor: pointer;
 		display: flex;
@@ -103,24 +90,9 @@
 		flex-direction: column;
 		font-family: 'Iosevka', sans-serif;
 	}
-    .card form label {
-		font-family: 'Iosevka', sans-serif;
-		font-size: 1.2rem;
-		padding-bottom: 1rem;
-	}
-    .card a {
-        color: var(--green);
-        letter-spacing: 0.6px;
-        font-family: 'Iosevka', sans-serif;
-        font-size: 1.2rem;
-    }
     @media (max-width: 1250px) {
 		.card {
 			width: 60%;
-		}
-
-		.card form input {
-			font-size: 1.25rem;
 		}
 	}
 </style>

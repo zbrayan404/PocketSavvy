@@ -5,7 +5,7 @@
     //{ name: "Settings", path:"/settings"},
     { name: "Accounts", path: "/settings/accounts"},
     { name: "Avatar", path: "/settings/avatar"},
-    { name: "Change Password", path: "/settings/profile"}
+    { name: "Password", path: "/settings/profile"}
     
     ];
   
