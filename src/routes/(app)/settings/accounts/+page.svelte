@@ -2,7 +2,7 @@
     <div class="main">
         <h1>Accounts</h1>
 
-        <button onclick="">Change Avatar</button>
+        <button onclick="">Change Account</button>
     </div>
 </div>
 

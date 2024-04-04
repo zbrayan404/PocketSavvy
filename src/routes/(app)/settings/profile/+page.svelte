@@ -29,16 +29,19 @@
             {#if form?.error}<p class="error">Invalid credentials!</p>{/if}
             <div>
                 <label for="password">Password</label>
-                <input
-                    bind:value={password}
-                    autocomplete="password"
-                    autocorrect="off"
-                    type="text"
-                    id="password"
-                    name="password"
-                    placeholder="Password..."
-                    required
-                />
+                <div class="input-wrapper">
+                    {#if !showPassword}
+                        <button class="visiblity" type="button" on:click={() => showPassword = true}>
+                            <EyeOff size={20} />
+                        </button>
+                        <input bind:value={password} autocomplete="off" type='password' id="password" name="password"  placeholder="Password..." required />
+                    {:else}
+                        <button class="visiblity" type="button" on:click={() => showPassword = false}>
+                            <Eye size={20} />
+                        </button>
+                        <input bind:value={password} autocomplete="off" type='text' id="password" name="password"  placeholder="Password..." required />
+                    {/if}
+                </div>
             </div>
             <div>
                 <label for="newPassword">New Password</label>
