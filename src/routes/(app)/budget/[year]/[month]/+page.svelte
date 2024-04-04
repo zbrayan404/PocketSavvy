@@ -54,7 +54,7 @@
             <h1>Budget</h1>
             <button on:click={openForm} class="add-expenses-button">+</button>
         </div>
-        <ExpenseForm {isOpen} onClose={closeForm}></ExpenseForm>
+        <ExpenseForm {isOpen} onClose={closeForm} categoryOptions={data.categories}></ExpenseForm>
         <div class="overview">
             <div class="budget-overview"> 
                 {#each categoryType as type}

@@ -13,9 +13,25 @@ export async function load({ locals, params }) {
     return regex.test(input);
   }
 
+  const getCategories = async () => {
+    console.log("Fetching categories...");
+    try {
+      const records = await locals.pb.collection("categories").getFullList();
+      let data = records.map((record) => ({
+        name: record.name,
+        id: record.id,
+      }));
+      return data;
+    } catch (error) {
+      console.error("Error fetching:", error);
+      return [];
+    }
+  };
+
   // Fetch data or perform any necessary operations
   return {
     year: parseInt(params.year),
     month: parseInt(params.month),
+    categories: await getCategories()
   };
 }

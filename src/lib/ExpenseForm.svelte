@@ -2,60 +2,47 @@
 
 <script>
     import { currentUser, pb } from "$lib/pocketbase.js";
-    import { onMount } from 'svelte';
 
     export let isOpen = false;
     export let onClose;
-    
-    let date = '';
-    let amount = '';
+    export let categoryOptions = [];
+
     let category = '';
+    let amount = '';
+    let startDate = '';
+    let endDate = '';
+    let month = '';
+    let year = '';
 
-    let categoryOptions = [];
-
-    
-    async function getCategories() {
-      const records = await pb.collection('categories').getFullList({
-        sort: '-created',
-      });
-
-      let data = records.map(record => ({
-        id: record.id,
-        name: record.name
-      }));
-
-      console.log(data);
-
-      return data;
-    }
+    const months = [
+      "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
 
     async function submitExpense() {
       const data = {
         "user": currentUser.id,
         "category": category,
         "amount": parseFloat(amount),
-        "startDate": date,
-        "year": "2024"
+        "startDate": startDate,
+        "endDate": endDate,
+        "month": month,
+        "year": year,
       };
       
       const record = await pb.collection('budgets').create(data);
       
       // clear form fields
-      date = '';
-      amount = '';
       category = '';
+      amount = '';
+      startDate = '';
+      endDate = '';
+      month = '';
+      year = '';
       closeForm();
     }
 
     function closeForm() {
       onClose();
-    }
-
-    onMount(async () => {
-      categoryOptions = await getCategories();
-      console.log(categoryOptions);
-    });
-    
+    }   
 
   </script>
   
@@ -63,23 +50,36 @@
     <div class="expense-form">
       <div class="expense-form-content">
         <button class="close" on:click={closeForm}>&times;</button>
-        <form on:submit|preventDefault={submitExpense}>
+        <form on:submit={submitExpense}>
+        
             <div class="input-group">
-                <label for="date">Date:</label>
-                <input type="date" id="date" bind:value={date} required style="color: var(--black);">
 
-                <label for="amount">Amount Spent:</label>
-                <input type="number" id="amount" min="0" step="1.00" bind:value={amount} required style="color: var(--black);">
-
-                <label for="category">Category:</label>
-                <select id="category" bind:value={category} required>
-                      {#each categoryOptions as cat }
-                        <option value={cat.id}>{cat.name}</option>
-                        
-                      {/each}
-                
+              <label for="category">Category:</label>
+              <select id="category" bind:value={category} required>
+                    {#each categoryOptions as cat }
+                      <option value={cat.id}>{cat.name}</option>
+                    {/each}
               </select>
-              </div>
+
+              <label for="amount">Amount Spent:</label>
+              <input type="number" id="amount" min="0" step="1.00" bind:value={amount} required style="color: var(--black);">
+
+              <label for="startDate">Start Date:</label>
+              <input type="date" id="startDate" bind:value={startDate} required style="color: var(--black);">
+
+              <label for="endDate">End Date:</label>
+              <input type="date" id="endDate" bind:value={endDate} required style="color: var(--black);">
+
+              <label for="month">Month:</label>
+              <select id="month" bind:value={month} required>
+                {#each months as monthOption}
+                  <option value={monthOption}>{monthOption}</option>
+                {/each}
+              </select>
+  
+              <label for="year">Year:</label>
+              <input type="number" id="year" bind:value={year} required style="color: var(--black);">
+            </div>
             
             <!-- Submit button -->
             <button type="submit">Submit</button>
