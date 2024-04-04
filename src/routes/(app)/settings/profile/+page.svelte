@@ -50,7 +50,7 @@
                         <button class="visiblity" type="button" on:click={() => showNewPassword = true}>
                             <EyeOff size={20} />
                         </button>
-                        <input bind:value={newPassword} autocomplete="off" type='newPassword' id="newPassword" name="newPassword"  placeholder="Enter New Password..." required />
+                        <input bind:value={newPassword} autocomplete="off" type='password' id="newPassword" name="newPassword"  placeholder="Enter New Password..." required />
                     {:else}
                         <button class="visiblity" type="button" on:click={() => showNewPassword = false}>
                             <Eye size={20} />
@@ -66,7 +66,7 @@
                         <button class="visiblity" type="button" on:click={() => showConfirmPassword = true}>
                             <EyeOff size={20} />
                         </button>
-                        <input bind:value={confirmPassword} autocomplete="off" type='confirmPassword' id="confirmPassword" name="confirmPassword"  placeholder="Confirm Password..." required />
+                        <input bind:value={confirmPassword} autocomplete="off" type='password' id="confirmPassword" name="confirmPassword"  placeholder="Confirm Password..." required />
                     {:else}
                         <button class="visiblity" type="button" on:click={() => showConfirmPassword = false}>
                             <Eye size={20} />
