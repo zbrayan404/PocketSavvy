@@ -2,7 +2,7 @@
     import { page } from '$app/stores';
   
     let navItems = [
-    { name: "Settings", path:"/settings"},
+    //{ name: "Settings", path:"/settings"},
     { name: "Accounts", path: "/settings/accounts"},
     { name: "Avatar", path: "/settings/avatar"},
     { name: "Change Password", path: "/settings/profile"}

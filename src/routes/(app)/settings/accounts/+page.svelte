@@ -2,7 +2,8 @@
     <div class="main">
         <h1>Accounts</h1>
 
-        <button onclick="">Change Account</button>
+        <button onclick="">Change To Checking</button>
+        <button onclick="">Change To Savings</button>
     </div>
 </div>
 
@@ -35,4 +36,30 @@
         font-family: 'Iosevka', sans-serif;
         font-size: 40px;
     }
+    button {
+		cursor: pointer;
+		display: flex;
+		flex-direction: row;
+		gap: 0.5rem;
+        letter-spacing: 0.6px;
+		font-family: 'Iosevka', sans-serif;
+		align-items: center;
+		justify-content: center;
+		line-height: 1;
+		color: var(--white);
+		font-size: 18px;
+		width: 50%;
+		height: 55px;
+		font-weight: bold;
+		border: 2px solid;
+		transition: 0.3s;
+		box-shadow: 5px 5px 0px 0px var(--white);
+		background-color: var(--gray);
+		border-radius: 11.83px;
+	}
+    button:hover {
+		box-shadow: 0 0 black;
+		color: var(--gray);
+		background-color: var(--white);
+	}
 </style>

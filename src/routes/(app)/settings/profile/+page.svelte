@@ -34,12 +34,12 @@
                         <button class="visiblity" type="button" on:click={() => showPassword = true}>
                             <EyeOff size={20} />
                         </button>
-                        <input bind:value={password} autocomplete="off" type='password' id="password" name="password"  placeholder="Password..." required />
+                        <input bind:value={password} autocomplete="off" type='password' id="password" name="password"  placeholder="Enter Password..." required />
                     {:else}
                         <button class="visiblity" type="button" on:click={() => showPassword = false}>
                             <Eye size={20} />
                         </button>
-                        <input bind:value={password} autocomplete="off" type='text' id="password" name="password"  placeholder="Password..." required />
+                        <input bind:value={password} autocomplete="off" type='text' id="password" name="password"  placeholder="Enter Password..." required />
                     {/if}
                 </div>
             </div>
@@ -50,12 +50,12 @@
                         <button class="visiblity" type="button" on:click={() => showNewPassword = true}>
                             <EyeOff size={20} />
                         </button>
-                        <input bind:value={newPassword} autocomplete="off" type='newPassword' id="newPassword" name="newPassword"  placeholder="New Password..." required />
+                        <input bind:value={newPassword} autocomplete="off" type='newPassword' id="newPassword" name="newPassword"  placeholder="Enter New Password..." required />
                     {:else}
                         <button class="visiblity" type="button" on:click={() => showNewPassword = false}>
                             <Eye size={20} />
                         </button>
-                        <input bind:value={newPassword} autocomplete="off" type='text' id="newPassword" name="newPassword"  placeholder="New Password..." required />
+                        <input bind:value={newPassword} autocomplete="off" type='text' id="newPassword" name="newPassword"  placeholder="Enter New Password..." required />
                     {/if}
                 </div>
             </div>
