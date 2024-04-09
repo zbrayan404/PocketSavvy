@@ -5,16 +5,11 @@
 
     import ExpenseForm from '$lib/ExpenseForm.svelte';
 
-    export let data;
-
-    let month;
-    let year;
-
     let incomes = [
-        { category: 'Employment', current: 3500.00, budget: 3500.00, color: 'blue' },
-        { category: 'Side Hustle', current: 560.00, budget: 1000.00, color: 'green' },
-        { category: 'Investments', current: 180.00, budget: 300.00, color: 'red'},
-        { category: 'Other', current: 12.40, budget: 150.00, color: 'yellow'}
+        { category: 'Employment', current: 3500.00, budget: 3500.00 },
+        { category: 'Side Hustle', current: 560.00, budget: 1000.00 },
+        { category: 'Investments', current: 180.00, budget: 300.00},
+        { category: 'Other', current: 12.40, budget: 150.00}
     ];
 
     let category = [
@@ -40,10 +35,9 @@
         isOpen = false;
     }
 
-    $ : {
-        month = data.month - 1;
-        year = data.year;
-    }
+    let currentDate = new Date()
+    let month = currentDate.getMonth();
+    let year = currentDate.getFullYear();
 
 </script>
 
@@ -54,7 +48,7 @@
             <h1>Budget</h1>
             <button on:click={openForm} class="add-expenses-button">+</button>
         </div>
-        <ExpenseForm {isOpen} onClose={closeForm} categoryOptions={data.categories} currentUser={data.userID}></ExpenseForm>
+        <ExpenseForm {isOpen} onClose={closeForm}></ExpenseForm>
         <div class="overview">
             <div class="budget-overview"> 
                 {#each categoryType as type}
@@ -62,7 +56,7 @@
                         <h2>{type}</h2>
                         <div class="table">
                             <div class="indent"></div>
-                            <Table2 dataSet={incomes} header={['earned']}></Table2>
+                            <Table2 dataSet={incomes} categoryList={filterType(category, type)} header={['earned']}></Table2>
                         </div>
                     </div>
 	            {/each}

@@ -1,11 +1,12 @@
 <!-- Expense Form -->
 
 <script>
-    import { currentUser, pb } from "$lib/pocketbase.js";
+    import { pb } from "$lib/pocketbase.js";
 
     export let isOpen = false;
     export let onClose;
     export let categoryOptions = [];
+    export let currentUser = "";
 
     let category = '';
     let amount = '';
@@ -18,26 +19,36 @@
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
 
     async function submitExpense() {
+      console.log("Inside submit expense function");
       const data = {
-        "user": currentUser.id,
+        "user": currentUser,
         "category": category,
         "amount": parseFloat(amount),
         "startDate": startDate,
         "endDate": endDate,
         "month": month,
-        "year": year,
+        "year": parseInt(year),
       };
-      
-      const record = await pb.collection('budgets').create(data);
-      
-      // clear form fields
-      category = '';
-      amount = '';
-      startDate = '';
-      endDate = '';
-      month = '';
-      year = '';
-      closeForm();
+    
+      console.log(data);
+
+      try {
+        const record = await pb.collection('budgets').create(data);
+        console.log("Sucessful submission", record)
+        
+        // clear form fields
+        category = '';
+        amount = '';
+        startDate = '';
+        endDate = '';
+        month = '';
+        year = '';
+        closeForm();
+
+      } catch (error) {
+        console.error("Error fetching:", error);
+      }
+        
     }
 
     function closeForm() {
@@ -50,15 +61,16 @@
     <div class="expense-form">
       <div class="expense-form-content">
         <button class="close" on:click={closeForm}>&times;</button>
-        <form on:submit={submitExpense}>
+        <form>
         
             <div class="input-group">
 
               <label for="category">Category:</label>
               <select id="category" bind:value={category} required>
                     {#each categoryOptions as cat }
-                      <option value={cat.id}>{cat.name}</option>
+                      <option class="dropdown" value={cat.id}>{cat.name}</option>
                     {/each}
+                    <option class="dropdown" value="other">Other</option>
               </select>
 
               <label for="amount">Amount Spent:</label>
@@ -73,26 +85,32 @@
               <label for="month">Month:</label>
               <select id="month" bind:value={month} required>
                 {#each months as monthOption}
-                  <option value={monthOption}>{monthOption}</option>
+                  <option class="dropdown" value={monthOption}>{monthOption}</option>
                 {/each}
               </select>
   
               <label for="year">Year:</label>
-              <input type="number" id="year" bind:value={year} required style="color: var(--black);">
+              <input type="number" id="year" bind:value={year} required>
             </div>
             
             <!-- Submit button -->
-            <button type="submit">Submit</button>
+            <button type="submit" on:click={submitExpense}>Submit</button>
         </form>
       </div>
     </div>
   {/if}
   
   <style>
+    :global(:root) {
+      --gray: #17253e;
+      --white: #f5f7fa;
+      --green: #02cd8c;
+    }
     
     .input-group label {
         display: block; /*Make labels appear on a new line */
         margin-bottom: 5px;
+        font-family: 'Iosevka', sans-serif;
     }
 
     .expense-form {
@@ -117,6 +135,15 @@
         border: 2px solid;
         max-width: 600px;
         position: relative;
+    }
+
+    .expense-form-content select {
+        color: var(--gray);
+        background-color: var(--white); 
+        border-radius: 5px; 
+        padding: 8px;
+        margin-bottom: 10px; 
+        font-weight: bold;
     }
 
     .close {

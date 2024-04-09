@@ -32,6 +32,7 @@ export async function load({ locals, params }) {
   return {
     year: parseInt(params.year),
     month: parseInt(params.month),
-    categories: await getCategories()
+    categories: await getCategories(),
+    userID: locals.pb.authStore.model.id
   };
 }
