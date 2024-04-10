@@ -1,11 +1,15 @@
 <script>
     let user_avatar;
 
+    export let data;
+
     if (user_avatar) {
         console.log(user_avatar)
         console.log('${user_avatar.name}: ${user_avatar.size} bytes')
     }
-    function change_avatar() {
+
+    function change_avatar(avatar) {
+        console.log('Avatar Name: ', avatar.name)
 
     }
 </script>
@@ -15,13 +19,15 @@
         <div class="prose">
             <h1>Avatar</h1>
         </div>
-        <form
-            class="flex flex-col gap-4 my-6"
-            method="POST"
-            action="?/login"
-        >
             <div>
-                <button onclick="">Change Avatar</button>
+                <div class="avatar-grid">
+                    <select>
+                        {#each data.avatars as avatar }
+                            <option value="{avatar.url}">{avatar.name}</option>
+                        {/each}
+                    </select>
+                </div>
+                <button onclick="{change_avatar}">Change Avatar</button>
             </div>
     </section>
 </div>
@@ -51,8 +57,9 @@
         padding-top: 2.5rem;
         padding-bottom: 0;
         min-width: 300px;
+        height: 350px;
     }
-    .card form button {
+    .card button {
 		cursor: pointer;
 		display: flex;
 		flex-direction: row;
@@ -73,7 +80,7 @@
 		background-color: var(--gray);
 		border-radius: 11.83px;
 	}
-    .card form button:hover {
+    .card button:hover {
 		box-shadow: 0 0 black;
 		color: var(--gray);
 		background-color: var(--white);
@@ -85,11 +92,20 @@
 		margin: 0;
 		text-align: center;
     }
-    .card form {
-		display: flex;
-		flex-direction: column;
-		font-family: 'Iosevka', sans-serif;
-	}
+    .card .avatar {
+        width: 64px;
+        height: 64px;
+    }
+    .card .avatar-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        height: 144px;
+    }
+    .card .avatar-btn {
+        width: 64px;
+        height: 64px;
+    }
     @media (max-width: 1250px) {
 		.card {
 			width: 60%;
