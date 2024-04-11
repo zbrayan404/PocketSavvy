@@ -1,17 +1,55 @@
 <script>
-    let user_avatar;
 
     export let data;
 
-    if (user_avatar) {
-        console.log(user_avatar)
-        console.log('${user_avatar.name}: ${user_avatar.size} bytes')
-    }
-
-    function change_avatar(avatar) {
-        console.log('Avatar Name: ', avatar.name)
+    function change_avatar(event) {
+        user_avatar = event.detail.text
+        console.log('Avatar Name: ', user_avatar.name)
 
     }
+    
+    function gestures(number) {
+        const guestures = ["hand", "handPhone", "ok", "okLongArm", "point", "pointLongArm" ,"waveLongArm" ,"waveLongArms" ,"waveOkLongArms","wavePointLongArms"]
+        return guestures[number - 1];
+    }
+
+    function formatVariant(number) {
+    // Add leading zero for numbers < 10
+    return number < 10 ? "0" + number : number;
+    }
+
+    function randomAvatar() {
+        let avatar = `https://api.dicebear.com/8.x/notionists/svg?backgroundColor=02cd8c`;
+        
+        let beard = "&beard=variant" + formatVariant(Math.floor(Math.random() * 12 + 1)); // 01 - 12
+        let beardProbability = "&beardProbability=" + Math.floor(Math.random() * 101); // 0 - 100
+        
+        let body = "&body=variant" + formatVariant(Math.floor(Math.random() * 25 + 1)); // 01 - 25
+        let brows = "&brows=variant" + formatVariant(Math.floor(Math.random() * 13 + 1)); // 01 - 13
+        let eyes = "&eyes=variant" + formatVariant(Math.floor(Math.random() * 5 + 1)); // 01 - 05
+        let gesture = "&gesture=" + gestures(Math.floor(Math.random() * 10 + 1)); // 1 - 10 
+        let gestureProbability = "&gestureProbability=" + Math.floor(Math.random() * 101); // 0 - 100
+        
+        let glasses = "&glasses=variant" + formatVariant(Math.floor(Math.random() * 11 + 1)); // 01 - 11
+        let glassesProbability = "&glassesProbability=" + Math.floor(Math.random() * 101); // 0 - 100
+        
+        let hair = "&hair=variant" + formatVariant(Math.floor(Math.random() * 63 + 1)); // 01 - 63
+        let lips = "&lips=variant" + formatVariant(Math.floor(Math.random() * 30 + 1)); // 01 - 30
+        let nose = "&nose=variant" + formatVariant(Math.floor(Math.random() * 20 + 1)); // 01 - 20
+        
+        avatar += beard + beardProbability + body + brows + eyes + gesture + gestureProbability + glasses + glassesProbability + hair + lips + nose + "&scale=111";
+        
+        console.log(avatar);
+
+        return avatar;
+    }
+
+    let avatarUrl = randomAvatar();
+
+    function changeAvatar() {
+        avatarUrl = randomAvatar();
+    }
+
 </script>
 
 <div class="body-page">
@@ -21,18 +59,15 @@
         </div>
             <div>
                 <div class="avatar-grid">
-                    <select>
-                        {#each data.avatars as avatar }
-                            <option value="{avatar.url}">{avatar.name}</option>
-                        {/each}
-                    </select>
+                    <img src="{avatarUrl}" alt="avatar">
                 </div>
-                <button onclick="{change_avatar}">Change Avatar</button>
+                <button on:click={changeAvatar}>Change Avatar</button>
+                <button >Submit</button>
             </div>
     </section>
 </div>
 
-<style>
+<style lang='ts'>
     :global(:root) {
       --gray: #17253e;
       --white: #f5f7fa;
@@ -97,12 +132,6 @@
         height: 64px;
     }
     .card .avatar-grid {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        height: 144px;
-    }
-    .card .avatar-btn {
         width: 64px;
         height: 64px;
     }
