@@ -2,6 +2,7 @@
 
     export let onClose;
     export let data = [];
+    export let user;
 
     let id;
     let name;

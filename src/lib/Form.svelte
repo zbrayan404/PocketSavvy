@@ -4,11 +4,11 @@
 
     export let isOpen = false;
     export let onClose;
-    export let categoryOptions;
+    export let categoryOptions = [];
     export let month;
     export let year;
-    export let userID;
-  
+    export let user;
+
     let activeTab = 'Budget';
 
     function switchToBudget() {
@@ -34,9 +34,9 @@
             <h1>{activeTab}</h1>
           </div>
             {#if activeTab === 'Budget'}
-              <BudgetForm {year} {month} {categoryOptions} {onClose}></BudgetForm>
+              <BudgetForm {user} {year} {month} {categoryOptions} {onClose}></BudgetForm>
             {:else}
-              <CategoryForm {onClose}></CategoryForm>
+              <CategoryForm {user} {onClose}></CategoryForm>
             {/if}
         </section>
       </div>

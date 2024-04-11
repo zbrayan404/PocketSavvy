@@ -4,9 +4,10 @@
     export let onClose;
     export let data = [];
     export let categoryOptions = [];
-    export let user = 11111;
+    export let user;
     export let month;
     export let year;
+    export let activeTab;
 
     const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
@@ -29,10 +30,8 @@
         endDate = `${year}-${(months.indexOf(month) + 1).toString().padStart(2, '0')}-${new Date(year, months.indexOf(month) + 1, 0).getDate()}`;
     }
 
-
-    function handleSubmit(event) {
-      event.preventDefault();
-      // Handle form submission here
+    function switchToCategory() {
+        activeTab = 'Category';
     }
 
     function handleClose() {
@@ -40,6 +39,7 @@
     } 
 
     async function submitBudget() {
+      console.log("Inside of submitBudget function")
       const data = {
         "user": user,
         "category": category,
@@ -52,11 +52,12 @@
 
       try {
         const record = await pb.collection('budgets').create(data);
+        onClose();
       } catch (error) {
         console.error(error);
       }
       
-      onClose();
+      // onClose();
     }
 
     // function UpdateMode() {
@@ -88,10 +89,9 @@
       
     //   onClose();
     // }
-
 </script>
 
-<form class="flex flex-col gap-4" on:submit={handleSubmit}>
+<form class="flex flex-col gap-4">
     <div class="flex items-center justify-between">
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
@@ -100,6 +100,7 @@
                 {#each categoryOptions as cat}
                 <option value={cat.id}>{cat.name}</option>
                 {/each}
+                <option>Other</option>
             </select>
         </div>
         <div class="flex flex-col gap-2">
@@ -132,7 +133,7 @@
     </div>
     <div class="flex items-center justify-end gap-4 mt-12">
       <button type="button" on:click={handleClose}>Close</button>
-      <button type="submit">Submit</button>
+      <button type="submit" on:click={submitBudget}>Submit</button>
     </div>
 </form>
 
