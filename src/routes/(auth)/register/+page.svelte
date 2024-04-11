@@ -18,6 +18,48 @@
 	$: {if(email && form?.error) email.focus()}
 	$: passError = (password?.length && confirm?.length)? (password !== confirm)? true: false : false;
 
+    function gestures(number) {
+        const guestures = ["hand", "handPhone", "ok", "okLongArm", "point", "pointLongArm" ,"waveLongArm" ,"waveLongArms" ,"waveOkLongArms","wavePointLongArms"]
+        return guestures[number - 1];
+    }
+
+    function formatVariant(number) {
+    // Add leading zero for numbers < 10
+    return number < 10 ? "0" + number : number;
+    }
+
+    function randomAvatar() {
+        let avatar = `https://api.dicebear.com/8.x/notionists/svg?backgroundColor=02cd8c`;
+        
+        let beard = "&beard=variant" + formatVariant(Math.floor(Math.random() * 12 + 1)); // 01 - 12
+        let beardProbability = "&beardProbability=" + Math.floor(Math.random() * 101); // 0 - 100
+        
+        let body = "&body=variant" + formatVariant(Math.floor(Math.random() * 25 + 1)); // 01 - 25
+        let brows = "&brows=variant" + formatVariant(Math.floor(Math.random() * 13 + 1)); // 01 - 13
+        let eyes = "&eyes=variant" + formatVariant(Math.floor(Math.random() * 5 + 1)); // 01 - 05
+        let gesture = "&gesture=" + gestures(Math.floor(Math.random() * 10 + 1)); // 1 - 10 
+        let gestureProbability = "&gestureProbability=" + Math.floor(Math.random() * 101); // 0 - 100
+        
+        let glasses = "&glasses=variant" + formatVariant(Math.floor(Math.random() * 11 + 1)); // 01 - 11
+        let glassesProbability = "&glassesProbability=" + Math.floor(Math.random() * 101); // 0 - 100
+        
+        let hair = "&hair=variant" + formatVariant(Math.floor(Math.random() * 63 + 1)); // 01 - 63
+        let lips = "&lips=variant" + formatVariant(Math.floor(Math.random() * 30 + 1)); // 01 - 30
+        let nose = "&nose=variant" + formatVariant(Math.floor(Math.random() * 20 + 1)); // 01 - 20
+        
+        avatar += beard + beardProbability + body + brows + eyes + gesture + gestureProbability + glasses + glassesProbability + hair + lips + nose + "&scale=111";
+        
+        console.log(avatar);
+
+        return avatar;
+    }
+
+    let avatarUrl = randomAvatar();
+
+    function changeAvatar() {
+        avatarUrl = randomAvatar();
+    }
+
 </script>
 
 <div class="body-page">
@@ -30,6 +72,14 @@
             method="POST"
 			action="?/register">
             {#if passError}<p class="error">Passwords do not match!</p>{/if}
+
+            <input type="hidden" name="avatar" value={avatarUrl} />
+
+            <div class="flex justify-center">
+                <button type="button" class="avatar" on:click='{changeAvatar}'>
+                    <img src={avatarUrl} alt="Avatar" />
+                </button>
+            </div>
             <div>
                 <label for="email">Email</label>
                 <input
@@ -72,7 +122,6 @@
                 <label for="confirmPassword">Confirm Password</label>
                 <div class="input-wrapper">
                     {#if !showConfirm}
-                    
                         <button class="visiblity" type="button" on:click={() => showConfirm = true}>
                             <EyeOff size={20} />
                         </button>
@@ -86,13 +135,12 @@
                 </div>
             </div>
             <div class="flex items-center flex-col gap-1 mt-6">
-                <button disabled={passError}>Sign Up</button>
+                <button type="submit" disabled={passError}>Sign Up</button>
                 or
                 <a href="/login" class="link">Login</a>
             </div>
         </form>
     </section>
-
 </div>
 
 <style>
@@ -104,7 +152,7 @@
     .body-page {
         position: relative;
 		display: flex;
-        height: 700px;
+        height: 730px;
 		width: 100%;
 		justify-content: center;
 		align-items: center;
@@ -194,15 +242,21 @@
         font-family: 'Iosevka', sans-serif;
         font-size: 1.2rem;
     }
+    .card form .avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 20%;
+        overflow: hidden;
+        border: 2px solid;
+        margin: 0 auto;
+    }
     @media (max-width: 1250px) {
 		.card {
 			width: 60%;
 		}
-
 		.card form input {
 			font-size: 1.25rem;
 		}
-
         .card form .visiblity { 		
             top: 10px;
             right: 10px;
