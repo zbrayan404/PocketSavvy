@@ -7,6 +7,7 @@
     export let categoryOptions;
     export let month;
     export let year;
+    export let userID;
   
     let activeTab = 'Budget';
 

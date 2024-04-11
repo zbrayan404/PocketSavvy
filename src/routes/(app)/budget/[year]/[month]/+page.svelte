@@ -2,6 +2,7 @@
     import MonthFilter from '$lib/MonthFilter.svelte';
     import Table2 from '$lib/Table2.svelte';
     import Budget1 from '$lib/Budget.svelte';
+    import Form from '$lib/Form.svelte';
 
     import ExpenseForm from '$lib/ExpenseForm.svelte';
 
@@ -54,7 +55,7 @@
             <h1>Budget</h1>
             <button on:click={openForm} class="add-expenses-button">+</button>
         </div>
-        <ExpenseForm {isOpen} onClose={closeForm} categoryOptions={data.categories} currentUser={data.userID}></ExpenseForm>
+        <Form {year} {month} {isOpen} onClose={closeForm} categoryOptions={data.categories} user={data.userID}></Form>
         <div class="overview">
             <div class="budget-overview"> 
                 {#each categoryType as type}
