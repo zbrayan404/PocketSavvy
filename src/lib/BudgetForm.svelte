@@ -52,12 +52,11 @@
 
       try {
         const record = await pb.collection('budgets').create(data);
-        onClose();
       } catch (error) {
         console.error(error);
       }
-      
-      // onClose();
+
+      onClose();
     }
 
     // function UpdateMode() {

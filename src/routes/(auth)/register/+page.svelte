@@ -13,10 +13,15 @@
     let password = '';
     let confirm = '';
 
-    let email;
+    let email = '';
 
-	$: {if(email && form?.error) email.focus()}
-	$: passError = (password?.length && confirm?.length)? (password !== confirm)? true: false : false;
+    let nextForm = false;
+
+    $: {if(form?.error) log(form.error);}
+    $: passError = ((password?.length && confirm?.length) && (password !== confirm));
+    $: passMinLength = ((password?.length < 8) && (password?.length > 0));
+    $: passConfLength = ((confirm?.length < 8) && (confirm?.length > 0));
+    $: nextError =  (!email?.length || !confirm?.length || !password?.length ||  passError || passMinLength || passConfLength);
 
     function gestures(number) {
         const guestures = ["hand", "handPhone", "ok", "okLongArm", "point", "pointLongArm" ,"waveLongArm" ,"waveLongArms" ,"waveOkLongArms","wavePointLongArms"]
@@ -48,9 +53,6 @@
         let nose = "&nose=variant" + formatVariant(Math.floor(Math.random() * 20 + 1)); // 01 - 20
         
         avatar += beard + beardProbability + body + brows + eyes + gesture + gestureProbability + glasses + glassesProbability + hair + lips + nose + "&scale=111";
-        
-        console.log(avatar);
-
         return avatar;
     }
 
@@ -68,30 +70,20 @@
             <h1 class="">Sign Up</h1>
         </div>
         <form
-            class="flex flex-col gap-4 my-6"
+            class="flex flex-colc gap-4 my-6"
             method="POST"
 			action="?/register">
+            {#if form?.error}<p class="error">Invalid or Taken Email!</p>{/if}
             {#if passError}<p class="error">Passwords do not match!</p>{/if}
-
-            <input type="hidden" name="avatar" value={avatarUrl} />
-
-            <div class="flex justify-center">
-                <button type="button" class="avatar" on:click='{changeAvatar}'>
-                    <img src={avatarUrl} alt="Avatar" />
-                </button>
+            <div hidden={!nextForm} >
+                <input type="hidden" name="avatar" value={avatarUrl} />
+                <div class="flex justify-center">
+                    <button type="button" class="avatar" on:click='{changeAvatar}'>
+                        <img src={avatarUrl} alt="Avatar" />
+                    </button>
+                </div>
             </div>
-            <div>
-                <label for="email">Email</label>
-                <input
-                    autocomplete="email"
-                    autocorrect="off"
-                    type="email"
-                    name="email"
-                    placeholder="Email..."
-                    required
-                />
-            </div>
-			<div>
+            <div hidden={!nextForm}>
                 <label for="name">Name</label>
                 <input
                     autocomplete="name"
@@ -102,7 +94,19 @@
                     required
                 />
             </div>
-            <div>
+            <div hidden={nextForm}>
+                <label for="email">Email</label>
+                <input
+                    autocomplete="email"
+                    autocorrect="on"
+                    type="email"
+                    name="email"
+                    placeholder="Email..."
+                    bind:value={email}
+                    required
+                />
+            </div>
+            <div hidden={nextForm}>
                 <label for="password">Password</label>
                 <div class="input-wrapper">
                     {#if !showPassword}
@@ -116,9 +120,12 @@
                         </button>
                         <input bind:value={password} autocomplete="off" type='text' id="password" name="password"  placeholder="Password..." required />
                     {/if}
+                    {#if passMinLength}
+                        <p class="error">Password must be at least 8 characters long</p>
+                    {/if}
                 </div>
             </div>
-			<div>
+			<div hidden={nextForm}>
                 <label for="confirmPassword">Confirm Password</label>
                 <div class="input-wrapper">
                     {#if !showConfirm}
@@ -132,10 +139,20 @@
                         </button>
                         <input bind:value={confirm} autocomplete="off" type='text'  id="confirmPassword" placeholder="Confirm Password..." name="confirmPassword" required />
                     {/if}
+                    {#if passConfLength}
+                        <p class="error">Password must be at least 8 characters long</p>
+                    {/if}
                 </div>
             </div>
+            <div hidden={!nextForm}>
+                <button type="button" on:click = {() => nextForm = !nextForm} >{nextForm ? 'Back' : 'Next'}</button>
+            </div>
             <div class="flex items-center flex-col gap-1 mt-6">
-                <button type="submit" disabled={passError}>Sign Up</button>
+                {#if !nextForm}
+                    <button type="button" on:click = {() => nextForm = !nextForm} disabled={nextError} >Next</button>
+                {:else}
+                    <button type="submit" disabled={passError} >Sign Up</button>
+                {/if}
                 or
                 <a href="/login" class="link">Login</a>
             </div>
@@ -152,7 +169,7 @@
     .body-page {
         position: relative;
 		display: flex;
-        height: 730px;
+        height: 830px;
 		width: 100%;
 		justify-content: center;
 		align-items: center;
@@ -243,12 +260,17 @@
         font-size: 1.2rem;
     }
     .card form .avatar {
-        width: 64px;
-        height: 64px;
+        width: 96px;
+        height: 96px;
         border-radius: 20%;
         overflow: hidden;
         border: 2px solid;
         margin: 0 auto;
+    }
+    .card form .error {
+        color: red;
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
     }
     @media (max-width: 1250px) {
 		.card {

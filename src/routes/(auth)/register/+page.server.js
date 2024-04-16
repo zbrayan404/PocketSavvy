@@ -36,7 +36,7 @@ export const actions = {
       console.log("Error:", err);
       return {
         error: true,
-        message: err,
+        email: email,
       };
     }
 

@@ -5,12 +5,14 @@
     export let categoryOptions = [];
     export let accountOptions = [];
 
-    let date;
+    let currentDate = new Date();
+
+    let date = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${(currentDate.getDay() + 7).toString().padStart(2, '0')}`;
     let account;
     let category;
     let payee;
     let amount;
-    let verify = true;
+    let verify = false;
 
     data = {
         "date": date,
