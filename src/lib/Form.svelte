@@ -1,6 +1,7 @@
 <script>
     import BudgetForm from "./BudgetForm.svelte";
     import CategoryForm from "./CategoryForm.svelte";
+    import IncomeForm from "./IncomeForm.svelte"
 
     export let isOpen = false;
     export let onClose;
@@ -19,6 +20,10 @@
         activeTab = 'Category';
     }
 
+    function switchToIncome() {
+        activeTab = 'Income';
+    }
+
   </script>
   
   {#if isOpen}
@@ -27,6 +32,7 @@
       <div>
         <div class="nav flex">
           <button on:click={switchToBudget} class:selected={activeTab === 'Budget'} >Budget</button>
+          <button on:click={switchToIncome} class:selected={activeTab === 'Income'} >Income</button>
           <button on:click={switchToCategory} class:selected={activeTab === 'Category'}>Category</button>
         </div>
         <section class="card">
@@ -35,6 +41,8 @@
           </div>
             {#if activeTab === 'Budget'}
               <BudgetForm {user} {year} {month} {categoryOptions} {onClose}></BudgetForm>
+            {:else if activeTab === 'Income'}
+              <IncomeForm {user} {onClose}></IncomeForm>
             {:else}
               <CategoryForm {user} {onClose}></CategoryForm>
             {/if}

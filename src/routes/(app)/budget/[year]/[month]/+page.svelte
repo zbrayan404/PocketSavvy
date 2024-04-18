@@ -63,7 +63,7 @@
                         <h2>{type}</h2>
                         <div class="table">
                             <div class="indent"></div>
-                            <Table2 dataSet={incomes} header={['earned']}></Table2>
+                            <Table2 dataSet={data.budgets} header={['earned']}></Table2>
                         </div>
                     </div>
 	            {/each}
