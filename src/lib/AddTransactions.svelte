@@ -1,5 +1,4 @@
 <script>
-    import BudgetForm from "$lib/BudgetForm.svelte";
     import CategoryForm from "$lib/CategoryForm.svelte";
     import TransactionForm from "$lib/TransactionForm.svelte";
 

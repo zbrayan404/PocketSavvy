@@ -1,4 +1,5 @@
 import { error } from "@sveltejs/kit";
+import { redirect } from "@sveltejs/kit";
 
 export async function load({ locals, params }) {
   if (!isMonth(params.month) || !isYear(params.year)) {
@@ -57,3 +58,13 @@ export async function load({ locals, params }) {
     categories: await getCategories(),
   };
 }
+
+export const actions = {
+  deleteTransaction: async ({ locals, request }) => {
+    const form = await request.formData();
+
+    const id = form.get("id") ?? "";
+
+    throw redirect(303, "/dashboard");
+  },
+};

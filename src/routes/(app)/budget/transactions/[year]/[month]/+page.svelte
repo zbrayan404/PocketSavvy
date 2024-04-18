@@ -2,9 +2,11 @@
     import { Plus } from "lucide-svelte";
     import MonthFilter from '$lib/MonthFilter.svelte';
     import Table3 from '$lib/Table3.svelte';
-    import Form from '$lib/Form.svelte';
-    import Transactions from '$lib/Transactions.svelte';
-    
+    import AddTransactions from '$lib/AddTransactions.svelte';
+    import {onMount,onDestroy} from 'svelte';
+    import PocketBase from 'pocketbase';
+
+    // const pb = new PocketBase("https://pocket-budget.pockethost.io");
 
     export let data;
 
@@ -13,6 +15,7 @@
 
     let categoryType = ['Income', 'Expense', 'Saving'];
     let categoryOptions = data.categories;
+    let transactions = [];
    
     function filterType(data, type) {
         return data.filter(item => item.type === type);
@@ -33,6 +36,39 @@
         isOpen = false;
     }
 
+    // async function getTransactions() {
+    //     console.log("Fetching Transactions...");
+    //     try {
+    //     const records = await pb.collection("transactions").getFullList();
+    //     let data = records.map((record) => ({
+    //         id: record.id,
+    //         date: record.date,
+    //         account: record.account,
+    //         category: record.category,
+    //         payee: record.payee,
+    //         amount: record.amount,
+    //         notes: record.notes,
+    //         verify: record.verify
+    //     }));
+    //     return data;
+    //     } catch (error) {
+    //     console.error("Error fetching transactions:", error);
+    //     return [];
+    //     }
+    // };
+
+    // pb.collection("transcations").subscribe('*', async (e) => {
+    //     transactions = await getTransactions();
+    // });
+
+    // onMount(async () => {
+    //     transactions = await getTransactions();
+    // });
+
+    // onDestroy(()=>{
+    //     pb.collection("transactions").unsubscribe('*');
+    // })
+
 </script>
 
 <div class="body">
@@ -44,8 +80,8 @@
             <h1>Transactions</h1>
             <button on:click={openForm} class="add"><Plus size={30} /></button>
         </div>
-        <Transactions {isOpen} {categoryOptions} onClose={closeForm}></Transactions>
-        <Table3></Table3>
+        <AddTransactions {isOpen} {categoryOptions} onClose={closeForm}></AddTransactions>
+        <Table3 {transactions}></Table3>
     </div>
 </div>
 
