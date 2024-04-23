@@ -1,13 +1,15 @@
 <script>
     import { pb } from "$lib/pocketbase.js";
-
+    //import { switchToCategory } from "./Form.svelte";
+  
     export let onClose;
     export let data = [];
     export let categoryOptions = [];
     export let user;
     export let month;
     export let year;
-    export let activeTab;
+    //export let switchToCategory;
+    //export let activeTab;
 
     const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
@@ -30,9 +32,9 @@
         endDate = `${year}-${(months.indexOf(month) + 1).toString().padStart(2, '0')}-${new Date(year, months.indexOf(month) + 1, 0).getDate()}`;
     }
 
-    function switchToCategory() {
-        activeTab = 'Category';
-    }
+    // function switchToCategory() {
+    //   activeTab = 'Category';
+    // }
 
     function handleClose() {
         onClose();
@@ -57,6 +59,15 @@
       }
 
       onClose();
+    }
+
+    // Function to handle item selection
+    function handleSelect(event) {
+      const value = event.target.value;
+      console.log(value);
+      if (value === "Other") {
+        switchToCategory();
+      }
     }
 
     // function UpdateMode() {
@@ -95,11 +106,11 @@
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
           <label for="category">Category:</label>
-            <select id="category" bind:value={category} required>
+            <select on:change={handleSelect} id="category" bind:value={category} required>
                 {#each categoryOptions as cat}
                 <option value={cat.id}>{cat.name}</option>
                 {/each}
-                <option>Other</option>
+                <option value="Other">Other</option>
             </select>
         </div>
         <div class="flex flex-col gap-2">

@@ -1,10 +1,11 @@
 <script>
-
+    import { pb } from "$lib/pocketbase.js";
+    
     export let onClose;
-    export let data = [];
+    // export let data = [];
     export let user;
 
-    let id;
+    // let id;
     let name;
     let color;
     let type;
@@ -24,14 +25,30 @@
         onClose();
     } 
 
-    function handleSubmit(event) {
-      event.preventDefault();
-      // Handle form submission here
+    // function handleSubmit(event) {
+    //   event.preventDefault();
+    //   // Handle form submission here
+    // }
+
+    async function submitCategory() {
+      const data = {
+        "user": user,
+        "name": name,
+        "type": type,
+        "color": color,
+      };
+
+      try {
+        const record = await pb.collection('categories').create(data);
+        onClose();
+      } catch (error) {
+        console.error(error);
+      }
     }
 
 </script>
 
-<form class="flex flex-col gap-4" on:submit={handleSubmit}>
+<form class="flex flex-col gap-4">
     <div class="flex justify-between items-start">
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
@@ -56,7 +73,7 @@
     </div>
     <div class="flex items-center justify-end gap-4 mt-12">
       <button type="button" on:click={handleClose}>Close</button>
-      <button type="submit">Submit</button>
+      <button type="submit" on:click={submitCategory}>Submit</button>
     </div>
 </form>
 
