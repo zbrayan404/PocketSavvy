@@ -1,5 +1,6 @@
 import { error } from "@sveltejs/kit";
 import { redirect } from "@sveltejs/kit";
+import { User } from "lucide-svelte";
 
 export async function load({ locals }) {
 
@@ -34,7 +35,8 @@ async function blob(url) {
 export const actions = {
   updateAvatar: async ({ locals, request }) => {
     const formData = await request.formData();
-    
+
+    const userID = locals.pb.authStore.model.id
     const name = formData.get("name") ?? "";
     const newAvatar = formData.get("avatar") ?? "";
 
@@ -45,7 +47,7 @@ export const actions = {
     data.set("avatar", avatarBlob, name + ".svg");
     
     try {
-      const newAvatar = await locals.pb.collection("users").update('izb96o2ikxb6raf', {"avatar":avatarBlob});
+      const newAvatar = await locals.pb.collection("users").update(userID, {"avatar":avatarBlob});
     } catch(err) {
       console.log('Error: ', err);
     }
