@@ -1,4 +1,5 @@
 import { error } from "@sveltejs/kit";
+import { redirect } from "@sveltejs/kit";
 
 export async function load({ locals }) {
 
@@ -23,3 +24,32 @@ export async function load({ locals }) {
     avatars: await getAvatars()
   };
 }
+
+async function blob(url) {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return blob;
+}
+
+export const actions = {
+  updateAvatar: async ({ locals, request }) => {
+    const formData = await request.formData();
+    
+    const name = formData.get("name") ?? "";
+    const newAvatar = formData.get("avatar") ?? "";
+
+    const avatarBlob = await blob(newAvatar);
+
+    const data = new FormData();
+    data.set("name", name);
+    data.set("avatar", avatarBlob, name + ".svg");
+    
+    try {
+      const newAvatar = await locals.pb.collection("users").update('izb96o2ikxb6raf', {"avatar":avatarBlob});
+    } catch(err) {
+      console.log('Error: ', err);
+    }
+
+    throw redirect(303, "/settings/avatar");
+  },
+};

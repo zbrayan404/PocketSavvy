@@ -1,6 +1,12 @@
-<script>
+<script lang='ts'>
 
+    import debug from "debug";
+	import type { ActionData } from "./$types";
+    const log = debug("app:routes:avatar:page.svelte");
+    
+    export let form: ActionData;
     export let data;
+    let user_avatar = data.avatar
 
     function change_avatar(event) {
         user_avatar = event.detail.text
@@ -50,6 +56,7 @@
         avatarUrl = randomAvatar();
     }
 
+
 </script>
 
 <div class="body-page">
@@ -57,13 +64,16 @@
         <div class="prose">
             <h1>Avatar</h1>
         </div>
-            <div>
+            <form 
+                method="POST" 
+                action="?/updateAvatar">
                 <div class="avatar-grid">
-                    <img src="{avatarUrl}" alt="avatar">
+                    <img src="{avatarUrl}" alt="avatar" class="avatar-img">
                 </div>
-                <button on:click={changeAvatar}>Change Avatar</button>
-                <button >Submit</button>
-            </div>
+                <input type="text" name="avatar" bind:value={avatarUrl} hidden/>
+                <button type="button" on:click={changeAvatar}>Change Avatar</button>
+                <button type="submit" >Submit</button>
+            </form>
     </section>
 </div>
 
@@ -127,13 +137,14 @@
 		margin: 0;
 		text-align: center;
     }
-    .card .avatar {
-        width: 64px;
-        height: 64px;
+    .card .avatar-img {
+        width: 128px;
+        height: 128px;
     }
     .card .avatar-grid {
-        width: 64px;
-        height: 64px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
     }
     @media (max-width: 1250px) {
 		.card {
