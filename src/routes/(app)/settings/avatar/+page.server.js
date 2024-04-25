@@ -36,7 +36,7 @@ export const actions = {
   updateAvatar: async ({ locals, request }) => {
     const formData = await request.formData();
 
-    const userID = locals.pb.authStore.model.id
+    const userID = locals.pb.authStore.model.id;
     const name = formData.get("name") ?? "";
     const newAvatar = formData.get("avatar") ?? "";
 

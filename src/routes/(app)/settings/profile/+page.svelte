@@ -24,7 +24,7 @@
         <form
             class="flex flex-col gap-4 my-6"
             method="POST"
-            action="?/login"
+            action="?/changePassword"
         >
             {#if form?.error}<p class="error">Invalid credentials!</p>{/if}
             <div>
