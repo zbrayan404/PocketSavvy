@@ -2,7 +2,6 @@
 
 <script>
     import { pb } from "$lib/pocketbase.js";
-    // 
 
     export let isOpen = false;
     export let onClose;

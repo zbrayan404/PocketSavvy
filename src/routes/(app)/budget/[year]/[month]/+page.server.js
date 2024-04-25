@@ -59,14 +59,12 @@ export async function load({ locals, params }) {
     const month = parseInt(params.month) - 1;
     const categories = await getCategories();
     const budgets = await getBudgets();
-    const userID = locals.pb.authStore?.model.id;
 
     return {
       year,
       month,
       categories,
       budgets,
-      userID,
     };
   } catch (error) {
     // Handle errors here

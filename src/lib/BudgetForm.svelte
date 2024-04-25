@@ -1,11 +1,12 @@
 <script>
     import { pb } from "$lib/pocketbase.js";
+    import { onMount } from "svelte";
     //import { switchToCategory } from "./Form.svelte";
   
     export let onClose;
     export let data = [];
     export let categoryOptions = [];
-    export let user;
+    let user;
     export let month;
     export let year;
     //export let switchToCategory;
@@ -19,8 +20,9 @@
     let endDate = `${year}-${(months.indexOf(month) + 1).toString().padStart(2, '0')}-${new Date(year, months.indexOf(month) + 1, 0).getDate()}`;
 
     let category;
-    let id;
     let amount;
+
+    const PB = pb;
 
     if (data.length > 0) {
         UpdateMode();
@@ -53,7 +55,7 @@
       };
 
       try {
-        const record = await pb.collection('budgets').create(data);
+        const record = await PB.collection('budgets').create(data);
       } catch (error) {
         console.error(error);
       }
@@ -99,16 +101,25 @@
       
     //   onClose();
     // }
+
+    onMount(async () => {
+        PB.authStore?.loadFromCookie(document.cookie);
+        user = PB.authStore?.model.id;
+    });
 </script>
 
-<form class="flex flex-col gap-4">
+<form class="flex flex-col gap-4" on:submit|preventDefault>
     <div class="flex items-center justify-between">
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
           <label for="category">Category:</label>
             <select on:change={handleSelect} id="category" bind:value={category} required>
                 {#each categoryOptions as cat}
+<<<<<<< Updated upstream
                 <option value={cat.id}>{cat.name + " (" + cat.type + ")"}</option>
+=======
+                <option value={cat.id}>{cat.name + " (" + cat.type + ")"} </option>
+>>>>>>> Stashed changes
                 {/each}
                 <option value="Other">Other</option>
             </select>

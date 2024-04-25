@@ -111,7 +111,7 @@
             <h1>Budget</h1>
             <button on:click={openForm} class="add-expenses-button">+</button>
         </div>
-        <Form year={data.year} month={data.month} {isOpen} onClose={closeForm} categoryOptions={data.categories} user={data.userID}></Form>
+        <Form year={data.year} month={data.month} {isOpen} onClose={closeForm} categoryOptions={data.categories}></Form>
         <div class="overview">
             <div class="budget-overview"> 
                 {#each types as type}

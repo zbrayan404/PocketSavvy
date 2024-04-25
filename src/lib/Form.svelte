@@ -7,7 +7,6 @@
     export let categoryOptions = [];
     export let month;
     export let year;
-    export let user;
     
     let activeTab = 'Budget';
 
@@ -16,9 +15,9 @@
     }
 
     // export function switchToCategory() {
-    function switchToCategory() {
-      activeTab = 'Category';
-    }
+    // function switchToCategory() {
+    //   activeTab = 'Category';
+    // }
 
   </script>
 
@@ -28,16 +27,16 @@
       <div>
         <div class="nav flex">
           <button on:click={switchToBudget} class:selected={activeTab === 'Budget'} >Budget</button>
-          <button on:click={switchToCategory} class:selected={activeTab === 'Category'}>Category</button>
+          <!-- <button on:click={switchToCategory} class:selected={activeTab === 'Category'}>Category</button> -->
         </div>
         <section class="card">
           <div class="prose">
             <h1>{activeTab}</h1>
           </div>
             {#if activeTab === 'Budget'}
-              <BudgetForm {user} {year} {month} {categoryOptions} {onClose}></BudgetForm>
+              <BudgetForm {year} {month} {categoryOptions} {onClose}></BudgetForm>
             {:else}
-              <CategoryForm {user} {onClose}></CategoryForm>
+              <CategoryForm {onClose}></CategoryForm>
             {/if}
         </section>
       </div>
