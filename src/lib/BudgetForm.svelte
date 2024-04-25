@@ -108,7 +108,7 @@
           <label for="category">Category:</label>
             <select on:change={handleSelect} id="category" bind:value={category} required>
                 {#each categoryOptions as cat}
-                <option value={cat.id}>{cat.name}</option>
+                <option value={cat.id}>{cat.name + " (" + cat.type + ")"}</option>
                 {/each}
                 <option value="Other">Other</option>
             </select>
