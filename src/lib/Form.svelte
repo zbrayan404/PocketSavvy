@@ -14,10 +14,10 @@
       activeTab = 'Budget';
     }
 
-    // export function switchToCategory() {
-    // function switchToCategory() {
-    //   activeTab = 'Category';
-    // }
+    
+    function switchToCategory() {
+      activeTab = 'Category';
+    }
 
   </script>
 
@@ -27,7 +27,7 @@
       <div>
         <div class="nav flex">
           <button on:click={switchToBudget} class:selected={activeTab === 'Budget'} >Budget</button>
-          <!-- <button on:click={switchToCategory} class:selected={activeTab === 'Category'}>Category</button> -->
+          <button on:click={switchToCategory} class:selected={activeTab === 'Category'}>Category</button>
         </div>
         <section class="card">
           <div class="prose">
