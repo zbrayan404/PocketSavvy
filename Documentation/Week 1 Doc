@@ -9,7 +9,7 @@ Pages
 
 Transaction Page
 · Input: Date, Amount Spent, Category, Account Name, Notes, Tags, Reoccurring Payment (check box)
-o If you select Reoccurring Payment a more detailed box pops up asking if it’s a yearly, monthly, weekly payment.
+· If you select Reoccurring Payment a more detailed box pops up asking if it’s a yearly, monthly, weekly payment.
 · This page will be used to calculate expenses, income, and savings automatically on Budget Page
 
 Reoccurring Page
@@ -28,7 +28,7 @@ Dashboard Page
 
 Goal Page
 · Set a goal or event
-o How much you want to save by specific date it can show you what to cut back on
+· How much you want to save by specific date it can show you what to cut back on
 
 Open Source Website Building
 · GrapeJS
