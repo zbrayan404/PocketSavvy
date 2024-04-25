@@ -115,11 +115,7 @@
           <label for="category">Category:</label>
             <select on:change={handleSelect} id="category" bind:value={category} required>
                 {#each categoryOptions as cat}
-<<<<<<< Updated upstream
-                <option value={cat.id}>{cat.name + " (" + cat.type + ")"}</option>
-=======
                 <option value={cat.id}>{cat.name + " (" + cat.type + ")"} </option>
->>>>>>> Stashed changes
                 {/each}
                 <option value="Other">Other</option>
             </select>
