@@ -1,7 +1,10 @@
 <script>
     import { MoreHorizontal } from 'lucide-svelte';
+    import TransactionForm from "$lib/TransactionForm.svelte";
 
     export let transaction;
+    export let categoryOptions;
+    export let accounts;
 
     let isMenuVisible = false;
     let isEditMenuVisible = false;
@@ -33,6 +36,11 @@
   function openDelete(){
     isDeleteMenuVisible = true;
     isMenuVisible = false
+  }
+
+  function onClose(){
+    isEditMenuVisible = false;
+    isDeleteMenuVisible = false;
   }
 
   let menuItems = [
@@ -78,9 +86,7 @@
                 <h1>Transaction</h1>
             </div>
             {#if isEditMenuVisible}
-                <form>
-                    <button type="button" on:click={() => isEditMenuVisible = false}>Cancel</button>
-                </form>
+                <TransactionForm {categoryOptions} {onClose} transaction={transaction} accountOptions={accounts}></TransactionForm>
             {/if}
             {#if isDeleteMenuVisible}
                 <form  method="POST" action="?/deleteTransaction">
@@ -156,10 +162,11 @@
         border: 2px solid;
         width: 440px;
         position: relative;
-        padding: 5%;
+        padding: 2.5%;
         padding-top: 2.5rem;
         padding-bottom: 0;
         min-width: 300px;
+        text-align: left;
     }
     .card h1 {
         letter-spacing: 0.6px;

@@ -96,5 +96,11 @@
         justify-content: center;
         padding-top: 110px;
     }
+    @media (max-width: 1290px) {
+        .main {
+            padding-left: 2.5%;
+            padding-right: 2.5%;
+        }
+    }
 
 </style>

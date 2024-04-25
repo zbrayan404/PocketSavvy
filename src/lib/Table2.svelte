@@ -2,31 +2,45 @@
     import { MoreHorizontal } from 'lucide-svelte';
 
     export let dataSet = [];
-    export let header = [];
+    export let type = '';
 
-    // Calculate difference between budget and current
+    let header;
+    let budgets;
+
+    // Function to calculate difference between budget and current
     const calculateDifference = (budget, current) => {
         return budget - current;
     };
 
-    // Map the data to include difference
-    dataSet = dataSet.map(item => {
-        return {
+    // Function to calculate dollar padding
+    const dollarPadding = (amount, property) => {
+        let maxAmount = Math.max(...budgets.map(item => item[property]));
+        let maxDigits = maxAmount.toFixed(2).length;
+        return maxDigits - amount.toFixed(2).length + 1;
+    };
+
+    // Function to calculate the table header based on type
+    function tableHeader(type){
+        if (type === 'Income') {
+            return ['incomes', 'earned'];
+        } else if (type === 'Expense') {
+            return ['expenses', 'spent'];
+        } else {
+            return ['savings', 'saved'];
+        }
+    };
+
+    // Reactive declaration to update budgets whenever dataSet or type changes
+    $: {
+        header = tableHeader(type);
+        budgets = dataSet.map(item => ({
             category: item.category,
             current: item.current,
             budget: item.budget,
             color: item.color,
             difference: calculateDifference(item.budget, item.current)
-        };
-    });
-
-    // Function to calculate dollar padding
-    const dollarPadding = (amount, property) => {
-        let maxAmount = Math.max(...dataSet.map(item => item[property]));
-        let maxDigits = maxAmount.toFixed(2).length;
-        return maxDigits - amount.toFixed(2).length + 1;
-    };
-
+        }));
+    }
 </script>
 
 <section class="section">
@@ -35,23 +49,23 @@
             <tr class="overview-header">
                 <th class="title-header">Category</th>
                 <th class="budget-header">Budget</th>
-                <th class="current-header">{header[0]}</th>
+                <th class="current-header">{header[1]}</th>
                 <th class="differ-header">Difference</th>
                 <th class="actions-header"></th>
             </tr>
         </thead>
         <tbody>
-            {#each dataSet as { category, current, budget, color, difference }}
-            <tr class="category-overview" key={category}>
+            {#each budgets as budget}
+            <tr class="category-overview" key={budget.category}>
                 <td class="category-title">
                     <div class="category">
-                        <div class="category-indicator" style="background-color: {color}"></div>
-                        <span class="title">{category}</span>
+                        <div class="category-indicator" style="background-color: {budget.color}"></div>
+                        <span class="title">{budget.category}</span>
                     </div>
                 </td>
-                <td class="budget-summary">$<span style="padding-left: {dollarPadding(budget, "budget") * 6}px">{budget.toFixed(2)}</span></td>
-                <td class="current-summary">$<span style="padding-left: {dollarPadding(current, "current") * 6}px">{current.toFixed(2)}</span></td>
-                <td class="differ-summary">$<span style="padding-left: {dollarPadding(difference, "difference") * 6}px">{difference.toFixed(2)}</span></td>
+                <td class="budget-summary">$<span style="padding-left: {dollarPadding(budget.budget, "budget") * 6}px">{budget.budget.toFixed(2)}</span></td>
+                <td class="current-summary">$<span style="padding-left: {dollarPadding(budget.current, "current") * 6}px">{budget.current.toFixed(2)}</span></td>
+                <td class="differ-summary">$<span style="padding-left: {dollarPadding(budget.difference, "difference") * 6}px">{budget.difference.toFixed(2)}</span></td>
                 <td class="actions">
                     <span class="action">
                         <button class="edit-button"><MoreHorizontal /></button>
@@ -62,6 +76,7 @@
         </tbody>
     </table>
 </section>
+
 
 <style>
     :global(:root) {

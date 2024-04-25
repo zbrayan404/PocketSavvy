@@ -1,35 +1,32 @@
 <script>
+    import { pb } from "$lib/pocketbase";
     import MonthFilter from '$lib/MonthFilter.svelte';
     import Table2 from '$lib/Table2.svelte';
     import Budget1 from '$lib/Budget.svelte';
     import Form from '$lib/Form.svelte';
-
-    import ExpenseForm from '$lib/ExpenseForm.svelte';
+    import {onMount,onDestroy} from 'svelte';
 
     export let data;
 
-    let month;
-    let year;
+    // let incomes = [
+    //     { category: 'Employment', current: 3500.00, budget: 3500.00, color: 'blue' },
+    //     { category: 'Side Hustle', current: 560.00, budget: 1000.00, color: 'green' },
+    //     { category: 'Investments', current: 180.00, budget: 300.00, color: 'red'},
+    //     { category: 'Other', current: 12.40, budget: 150.00, color: 'yellow'}
+    // ];
 
-    let incomes = [
-        { category: 'Employment', current: 3500.00, budget: 3500.00, color: 'blue' },
-        { category: 'Side Hustle', current: 560.00, budget: 1000.00, color: 'green' },
-        { category: 'Investments', current: 180.00, budget: 300.00, color: 'red'},
-        { category: 'Other', current: 12.40, budget: 150.00, color: 'yellow'}
-    ];
+    // let category = [
+    //     {category: 'Employment', color: 'blue', type: 'Income'},
+    //     {category: 'Side Hustle', color: 'green', type: 'Income'},
+    //     {category: 'Investments', color: 'red', type: 'Saving'},
+    //     {category: 'Other', color: 'yellow', type: 'Income'}
+    // ];
 
-    let category = [
-        {category: 'Employment', color: 'blue', type: 'Income'},
-        {category: 'Side Hustle', color: 'green', type: 'Income'},
-        {category: 'Investments', color: 'red', type: 'Savings'},
-        {category: 'Other', color: 'yellow', type: 'Income'}
-    ];
-
-    let categoryType = ['Income', 'Expenses', 'Savings'];
+    let types = ['Income', 'Expense', 'Saving'];
    
     let isOpen = false;
 
-    function filterType(data, type) {
+    function sortByType(data, type) {
         return data.filter(item => item.type === type);
     }
 
@@ -41,35 +38,94 @@
         isOpen = false;
     }
 
-    $ : {
-        month = data.month - 1;
-        year = data.year;
-    }
+    // REALTIME POCKETBASE
+	const PB = pb;
+
+    onMount(async () => {
+        PB.authStore?.loadFromCookie(document.cookie);
+        PB.collection('categories').subscribe('*', async ({action, record}) => {
+            if (action === 'create') {
+                let newRecord = {
+                    name: record.name,
+                    id: record.id,
+                    type: record.type,
+                    color: record.color
+                };
+                data.categories = [...data.categories, newRecord];
+            }
+            if (action === 'delete') {
+                data.categories = data.categories.filter(item => item.id !== record.id);
+            }
+            if (action == 'update') {
+                let updateRecord = {
+                    name: record.name,
+                    id: record.id,
+                    type: record.type,
+                    color: record.color
+                };
+                data.categories = data.categories.map(item => item.id === record.id ? updateRecord : item);
+            }
+        });
+        PB.collection('budgets').subscribe('*', async ({action, record}) => {
+            if (action === 'create') {
+                const getRecord = await PB.collection('budgetSummary').getOne(record.id);
+                let newRecord = {
+                    category: getRecord.categoryName,
+                    color: getRecord.color,
+                    type: getRecord.type,
+                    current: getRecord.amount,
+                    budget: getRecord.budget,
+                    id: getRecord.id,
+                };
+                data.budgets = [...data.budgets, newRecord];
+            }
+            if (action === 'delete') {
+                data.budgets = data.budgets.filter(item => item.id !== record.id);
+            }
+            if (action == 'update') {
+                const getRecord = await PB.collection('budgetSummary').getOne(record.id);
+                let updateRecord = {
+                    category: getRecord.categoryName,
+                    color: getRecord.color,
+                    type: getRecord.type,
+                    current: getRecord.amount,
+                    budget: getRecord.budget,
+                    id: getRecord.id,
+                };
+                data.budgets = data.budgets.map(item => item.id === record.id ? updateRecord : item);
+            }
+        });
+    });
+
+    onDestroy(() => {
+        PB.collection('budgets').unsubscribe('*');
+        PB.collection('categories').unsubscribe('*');
+    });
 
 </script>
 
 <div class="body">
-    <MonthFilter bind:selectedMonth={month} bind:year={year}></MonthFilter>
+    <MonthFilter bind:selectedMonth={data.month} bind:year={data.year}></MonthFilter>
     <div class="main">
         <div class="header">
             <h1>Budget</h1>
             <button on:click={openForm} class="add-expenses-button">+</button>
         </div>
-        <Form {year} {month} {isOpen} onClose={closeForm} categoryOptions={data.categories} user={data.userID}></Form>
+        <Form year={data.year} month={data.month} {isOpen} onClose={closeForm} categoryOptions={data.categories} user={data.userID}></Form>
         <div class="overview">
             <div class="budget-overview"> 
-                {#each categoryType as type}
+                {#each types as type}
                     <div class="budget">
                         <h2>{type}</h2>
                         <div class="table">
                             <div class="indent"></div>
-                            <Table2 dataSet={data.budgets} header={['earned']}></Table2>
+                            <Table2 dataSet={sortByType(data.budgets, type)} type={type}></Table2>
                         </div>
                     </div>
 	            {/each}
             </div>
             <div class="category-overview">
-                <Budget1 dataSet={incomes} categoryList={category} ></Budget1>
+                <!-- <Budget1 dataSet={incomes} categoryList={category} ></Budget1> -->
             </div>
         </div>
     </div>
@@ -86,6 +142,7 @@
         justify-content: center;
         align-items: center;
         width: 100vw;
+        height: 84vh;
         flex-direction: column;
     }
     .main {

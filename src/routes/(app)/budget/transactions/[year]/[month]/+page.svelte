@@ -4,20 +4,14 @@
     import Table3 from '$lib/Table3.svelte';
     import AddTransactions from '$lib/AddTransactions.svelte';
     import {onMount,onDestroy} from 'svelte';
-    import PocketBase from 'pocketbase';
-
-    // const pb = new PocketBase("https://pocket-budget.pockethost.io");
+    import { pb } from "$lib/pocketbase";
 
     export let data;
 
     let month;
     let year;
 
-    let categoryType = ['Income', 'Expense', 'Saving'];
-    let categoryOptions = data.categories;
-    let transactions = [];
-   
-    function filterType(data, type) {
+    function sortByType(type, data) {
         return data.filter(item => item.type === type);
     }
 
@@ -36,38 +30,49 @@
         isOpen = false;
     }
 
-    // async function getTransactions() {
-    //     console.log("Fetching Transactions...");
-    //     try {
-    //     const records = await pb.collection("transactions").getFullList();
-    //     let data = records.map((record) => ({
-    //         id: record.id,
-    //         date: record.date,
-    //         account: record.account,
-    //         category: record.category,
-    //         payee: record.payee,
-    //         amount: record.amount,
-    //         notes: record.notes,
-    //         verify: record.verify
-    //     }));
-    //     return data;
-    //     } catch (error) {
-    //     console.error("Error fetching transactions:", error);
-    //     return [];
-    //     }
-    // };
+    // REALTIME POCKETBASE
+	const PB = pb;
 
-    // pb.collection("transcations").subscribe('*', async (e) => {
-    //     transactions = await getTransactions();
-    // });
+    onMount(async () => {
+        PB.authStore?.loadFromCookie(document.cookie || '');
+        PB.collection("transactions").subscribe('*', async ({action, record}) => {
+            if (action === 'create') {
+                let newRecord = {
+                    id: record.id,
+                    date: record.date,
+                    user: record.user,
+                    account: record.account,
+                    category: record.category,
+                    payee: record.payee,
+                    amount: record.amount,
+                    notes: record.notes,
+                    verified: record.verify,
+                };
+                data.transactions = [...data.transactions, newRecord];
+            }
+            if (action === 'delete') {
+                data.transactions = data.transactions.filter(item => item.id !== record.id);
+            }
+            if (action === 'update') {
+                let updatedRecord = {
+                    id: record.id,
+                    date: record.date,
+                    user: record.user,
+                    account: record.account,
+                    category: record.category,
+                    payee: record.payee,
+                    amount: record.amount,
+                    notes: record.notes,
+                    verified: record.verify,
+                };
+                data.transactions = data.transactions.map(item => item.id === record.id ? updatedRecord : item);
+            }
+        });
+    });
 
-    // onMount(async () => {
-    //     transactions = await getTransactions();
-    // });
-
-    // onDestroy(()=>{
-    //     pb.collection("transactions").unsubscribe('*');
-    // })
+    onDestroy(()=>{
+        PB.collection("transactions").unsubscribe('*');
+    })
 
 </script>
 
@@ -80,8 +85,8 @@
             <h1>Transactions</h1>
             <button on:click={openForm} class="add"><Plus size={30} /></button>
         </div>
-        <AddTransactions {isOpen} {categoryOptions} onClose={closeForm}></AddTransactions>
-        <Table3 {transactions}></Table3>
+        <AddTransactions {isOpen} categoryOptions={data.categories} onClose={closeForm}></AddTransactions>
+        <Table3 transactions={data.transactions} categories={data.categories} accounts={data.accounts}></Table3>
     </div>
 </div>
 
@@ -96,7 +101,7 @@
         justify-content: center;
         align-items: center;
         width: 100vw;
-        height: 100vh;
+        height: 84vh;
         flex-direction: column;
     }
     .main {

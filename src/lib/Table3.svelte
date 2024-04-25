@@ -1,12 +1,9 @@
 <script>
     import TransactionButton from './TransactionButton.svelte';
 
-    export let transactions = [
-        { id: "11111", date: "2021-01-01", user: "1111112", account: "Cash", category: "Shipping", payee: "Amazon", amount: 3500.00, notes: "Gifts", verified: true },
-        { id: "11112", date: "2021-01-01", user: "1111112", account: "Cash", category: "Shipping", payee: "Amazon", amount: 560.00, notes: "", verified: true },
-        { id: "11113", date: "2021-01-01", user: "1111112", account: "Cash", category: "Shipping", payee: "Amazon", amount: 180.00, notes: "", verified: false },
-        { id: "11114", date: "2021-01-01", user: "1111112", account: "Cash", category: "Shipping", payee: "Amazon", amount: 12.40, notes: "", verified: true }
-    ];
+    export let transactions;
+    export let categories;
+    export let accounts;
 
      // Function to calculate dollar padding
     const dollarPadding = (amount, property) => {
@@ -33,7 +30,7 @@
         <tbody>
             {#each transactions as transaction}
             <tr class="transaction-overview">
-                <td class="date-transaction">{transaction.date}</td>
+                <td class="date-transaction">{transaction.date.substring(0, 10)}</td>
                 <td class="account-transaction">{transaction.account}</td>
                 <td class="payee-transaction">{transaction.payee}</td>
                 <td class="amount-transcation">$<span style="padding-left: {dollarPadding(transaction.amount, "amount") * 6}px">{transaction.amount.toFixed(2)}</span></td>
@@ -41,7 +38,7 @@
                 <td class="verified-transaction">{transaction.verified ? "Yes" : "No"}</td>
                 <td class="actions-transcation">
                     <span class="action">
-                        <TransactionButton {transaction}></TransactionButton>
+                        <TransactionButton categoryOptions={categories} transaction={transaction} accounts={accounts}></TransactionButton>
                     </span>
                 </td>
             </tr>

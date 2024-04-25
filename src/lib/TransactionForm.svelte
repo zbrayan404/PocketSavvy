@@ -1,9 +1,14 @@
 <script>
+    import { onMount } from 'svelte';
+    import { pb } from "$lib/pocketbase";
 
     export let onClose;
-    export let data = [];
+    export let transaction;
     export let categoryOptions = [];
     export let accountOptions = [];
+    const PB = pb;
+
+    let mode = "Add";
 
     let currentDate = new Date();
 
@@ -14,13 +19,14 @@
     let amount;
     let verify = false;
 
-    data = {
-        "date": date,
-        "account": account,
-        "category": category,
-        "payee": payee,
-        "amount": amount,
-        "verify": verify
+    if (transaction) {
+        mode = "Edit"
+        date = new Date(transaction.date).toISOString().split('T')[0];
+        account = transaction.account;
+        category = transaction.category;
+        payee = transaction.payee;
+        amount = transaction.amount;
+        verify = transaction.verified;
     }
 
     let notes;
@@ -29,14 +35,60 @@
         onClose();
     } 
 
-    function handleSubmit(event) {
-      event.preventDefault();
-      // Handle form submission here
+    async function updateTransaction() {
+        console.log("Updating transaction");
+        const data = {
+            "date": date,
+            "user": PB.authStore?.model.id,
+            "account": account,
+            "category": category,
+            "payee": payee,
+            "amount": amount,
+            "verify": verify,
+            "notes": notes
+        };
+        console.log(data);
+        try {
+            await PB.collection('transactions').update(transaction.id, data);
+            onClose();
+        } catch (error) {
+            console.error(error);
+        }
     }
+
+    async function addTransaction() {
+        const data = {
+            "date": date,
+            "user": PB.authStore?.model.id,
+            "account": account,
+            "category": category,
+            "payee": payee,
+            "amount": amount,
+            "verify": verify,
+            "notes": notes
+        };
+        try {
+            await PB.collection('transactions').create(data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function handleSubmit() {
+        if (mode === "Add") {
+            await addTransaction();
+        } else {
+            await updateTransaction();
+        }
+    }
+
+    onMount(async () => {
+        PB.authStore?.loadFromCookie(document.cookie || '');
+    });
 
 </script>
 
-<form class="flex flex-col gap-4" on:submit={handleSubmit}>
+<form class="flex flex-col gap-4" on:submit|preventDefault>
     <div class="flex justify-between items-start">
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
@@ -70,7 +122,7 @@
         <div class="flex flex-col gap-2">
             <label for="verify">Verify:</label>
             <label class="switch">
-                <input type="checkbox" name="verify" bind:value={verify} required>
+                <input type="checkbox" name="verify" bind:checked={verify} required>
                 <span class="slider round"></span>
             </label>
         </div>
@@ -82,7 +134,7 @@
     </div>
     <div class="flex items-center justify-end gap-4 mt-12">
       <button type="button" on:click={handleClose}>Close</button>
-      <button type="submit">Submit</button>
+      <button type="submit" on:click={handleSubmit}>{mode}</button>
     </div>
 </form>
 
