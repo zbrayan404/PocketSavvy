@@ -40,12 +40,18 @@ export async function load({ locals, params }) {
       });
       let data = records.map((record) => ({
         category: record.categoryName,
+        categoryID: record.category,
         color: record.color,
         type: record.type,
         current: record.amount,
         budget: record.budget,
+        startDate: record.startDate,
+        endDate: record.endDate,
+        month: record.Month,
+        year: record.Year,
         id: record.id,
       }));
+      console.log("Budgets:", data);
       return data;
     } catch (error) {
       console.error("Error fetching budgets:", error);

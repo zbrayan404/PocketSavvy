@@ -1,6 +1,5 @@
 import { error } from "@sveltejs/kit";
 import { redirect } from "@sveltejs/kit";
-import { Verified } from "lucide-svelte";
 
 export async function load({ locals, params }) {
   if (!isMonth(params.month) || !isYear(params.year)) {
@@ -38,8 +37,6 @@ export async function load({ locals, params }) {
     let endDate = `${params.year}-${params.month
       .toString()
       .padStart(2, "0")}-${new Date(params.year, params.month, 0).getDate()}`;
-    console.log("Start date:", startDate);
-    console.log("End date:", endDate);
     try {
       const records = await locals.pb.collection("transactions").getFullList({
         filter: `date > '${startDate}' && date < '${endDate}'`,
