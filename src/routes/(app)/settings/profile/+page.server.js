@@ -14,15 +14,17 @@ export const actions = {
         const authData = await locals.pb.collection('users').authWithPassword(username, oldPassword)
 
         if (locals.pb.authStore.isValid) {
-            if (password == passwordConfirm) {
-                try {
-                    const changePass = await locals.pb.collection("users").update(userID, {password:password}, {passwordConfirm:passwordConfirm});
-                } catch(err) {
-                    console.log('Error: ', err);
+
+            try {
+                const changePass = await locals.pb.collection("users").update(userID, {'oldPassword':oldPassword, 'password': password, 'passwordConfirm': passwordConfirm});
+            } catch(err) {
+                console.log('Error: ', err);
+                return {
+                    error:true
                 }
-            } else {
-                console.log("Error: Password Doesn't Match")
             }
+            throw redirect(303, "/dashboard");
+        
         };
     }
 }
