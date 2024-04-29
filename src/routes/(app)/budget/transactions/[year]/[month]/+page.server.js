@@ -21,6 +21,7 @@ export async function load({ locals, params }) {
       let data = records.map((record) => ({
         name: record.name,
         id: record.id,
+        type: record.type,
       }));
       return data;
     } catch (error) {
@@ -66,6 +67,7 @@ export async function load({ locals, params }) {
       let data = records.map((record) => ({
         name: record.name,
         id: record.id,
+        type: record.type,
       }));
       return data;
     } catch (error) {

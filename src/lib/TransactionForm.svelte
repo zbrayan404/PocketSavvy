@@ -4,8 +4,10 @@
 
   export let onClose;
   export let transaction;
-  export let categoryOptions = [];
-  export let accountOptions = [];
+  export let categories = [];
+  export let accounts = [];
+  export let switchToAccount;
+  export let switchToCategory;
 
   const PB = pb;
 
@@ -70,6 +72,7 @@
     };
     try {
       await PB.collection("transactions").create(data);
+      onClose();
     } catch (error) {
       console.error(error);
     }
@@ -80,6 +83,18 @@
       await addTransaction();
     } else {
       await updateTransaction();
+    }
+  }
+
+  // Function to handle item selection
+  function handleSelect(event) {
+    const value = event.target.value;
+    console.log(value);
+    if (value === "account") {
+      switchToAccount();
+    }
+    if (value === "category") {
+      switchToCategory();
     }
   }
 
@@ -97,18 +112,39 @@
       </div>
       <div class="flex flex-col gap-2">
         <label for="account">Account:</label>
-        <select id="account" bind:value={account} required>
-          {#each accountOptions as acc}
-            <option value={acc.id}>{acc.name}</option>
+        <select id="account" bind:value={account} on:change={handleSelect}>
+          {#if mode === "Add"}
+            <option value="">Select a Account</option>
+          {/if}
+          {#each accounts as account}
+            <option value={account.id}
+              >{account.name + " (" + account.type + ")"}
+            </option>
           {/each}
+          {#if switchToCategory}
+            <option value="account">Other</option>
+          {/if}
         </select>
       </div>
       <div class="flex flex-col gap-2">
         <label for="category">Category:</label>
-        <select id="category" bind:value={category} required>
-          {#each categoryOptions as cat}
-            <option value={cat.id}>{cat.name}</option>
+        <select
+          id="category"
+          bind:value={category}
+          on:change={handleSelect}
+          required
+        >
+          {#if mode === "Add"}
+            <option value="">Select a Category</option>
+          {/if}
+          {#each categories as category}
+            <option value={category.id}
+              >{category.name + " (" + category.type + ")"}</option
+            >
           {/each}
+          {#if switchToCategory}
+            <option value="category">Other</option>
+          {/if}
         </select>
       </div>
     </div>

@@ -88,10 +88,7 @@
           >
           <td class="actions-transcation">
             <span class="action">
-              <TransactionAction
-                categoryOptions={categories}
-                {transaction}
-                {accounts}
+              <TransactionAction {categories} {transaction} {accounts}
               ></TransactionAction>
             </span>
           </td>
@@ -99,6 +96,11 @@
       {/each}
     </tbody>
   </table>
+  {#if transactions.length === 0}
+    <div class="none">
+      <p class="none-text">No Transactions Found</p>
+    </div>
+  {/if}
 </section>
 
 <style>
@@ -162,5 +164,21 @@
   .transaction-overview {
     font-weight: 500;
     font-size: 10px;
+  }
+  .none {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--black);
+    color: var(--white);
+    opacity: 0.8;
+    border-radius: 11.83px;
+    height: 315px;
+    margin-top: 5px;
+  }
+  .none .none-text {
+    font-size: 30px;
+    letter-spacing: 0.6px;
+    font-family: "Iosevka", sans-serif;
   }
 </style>

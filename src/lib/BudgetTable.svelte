@@ -102,6 +102,11 @@
       {/each}
     </tbody>
   </table>
+  {#if budgets.length === 0}
+    <div class="none">
+      <p>No Budget ({type}) Found</p>
+    </div>
+  {/if}
 </section>
 
 <style>
@@ -214,7 +219,17 @@
     justify-content: center;
     align-items: center;
   }
-
+  .none {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--black);
+    color: var(--white);
+    opacity: 0.8;
+    border-radius: 11.83px;
+    height: 50px;
+    margin-top: 5px;
+  }
   @media (max-width: 764px) {
     .overview-header {
       font-size: 13px;

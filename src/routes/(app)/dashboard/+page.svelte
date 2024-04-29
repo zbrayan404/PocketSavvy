@@ -1,7 +1,7 @@
 <script>
     import ProgressBar from '$lib/ProgressBar.svelte';
-    import Table from '$lib/Table.svelte';
-    import Table2 from '$lib/Table2.svelte';
+    import Table from '$lib/DashboardTable.svelte';
+    import Table2 from '$lib/BudgetTable.svelte';
     import MonthFilter from '$lib/MonthFilter.svelte';
 
     let incomes = [

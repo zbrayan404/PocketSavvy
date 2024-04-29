@@ -50,10 +50,6 @@
     }
   }
 
-  // function switchToCategory() {
-  //   activeTab = 'Category';
-  // }
-
   function handleClose() {
     onClose();
   }

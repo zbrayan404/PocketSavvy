@@ -2,7 +2,7 @@
   import { Plus } from "lucide-svelte";
   import { pb } from "$lib/pocketbase";
   import MonthFilter from "$lib/MonthFilter.svelte";
-  import Table2 from "$lib/Table2.svelte";
+  import Table from "$lib/BudgetTable.svelte";
   import Budget1 from "$lib/Budget.svelte";
   import Form from "$lib/Form.svelte";
   import { onMount, onDestroy } from "svelte";
@@ -137,16 +137,11 @@
             <div class="table">
               <div class="indent"></div>
               <div class="data">
-                <Table2
+                <Table
                   dataSet={sortByType(data.budgets, type)}
                   {type}
                   categories={data.categories}
-                ></Table2>
-                {#if sortByType(data.budgets, type).length === 0}
-                  <div class="none">
-                    <p>No Budget ({type}) Found</p>
-                  </div>
-                {/if}
+                ></Table>
               </div>
             </div>
           </div>
@@ -250,15 +245,5 @@
     box-shadow: 0 0 black;
     color: var(--gray);
     background-color: var(--white);
-  }
-  .none {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: var(--black);
-    color: var(--white);
-    opacity: 0.8;
-    border-radius: 11.83px;
-    height: 60px;
   }
 </style>

@@ -1,53 +1,71 @@
 <script>
-    import CategoryForm from "$lib/CategoryForm.svelte";
-    import TransactionForm from "$lib/TransactionForm.svelte";
+  import CategoryForm from "$lib/CategoryForm.svelte";
+  import TransactionForm from "$lib/TransactionForm.svelte";
+  import AccountForm from "$lib/AccountForm.svelte";
 
-    export let isOpen = false;
-    export let onClose;
-    export let categoryOptions;
-  
-    let activeTab = 'Transaction';
+  export let isOpen = false;
+  export let onClose;
+  export let categories;
+  export let accounts;
 
-    function switchToTransaction() {
-        activeTab = 'Transaction';
-    }
+  let activeTab = "Transaction";
 
-    function switchToCategory() {
-        activeTab = 'Category';
-    }
-    function switchToAccount() {
-        activeTab = 'Account';
-    }
+  function switchToTransaction() {
+    activeTab = "Transaction";
+  }
 
-  </script>
-  
-  {#if isOpen}
-    <div class="form-page">
+  function switchToCategory() {
+    activeTab = "Category";
+  }
+  function switchToAccount() {
+    activeTab = "Account";
+  }
+</script>
+
+{#if isOpen}
+  <div class="form-page">
     <div class="body-page">
       <div>
         <div class="nav flex">
-          <button on:click={switchToTransaction} class:selected={activeTab === 'Transaction'} >Transaction</button>
-          <button on:click={switchToCategory} class:selected={activeTab === 'Category'}>Category</button>
-          <button on:click={switchToAccount} class:selected={activeTab === 'Account'} >Account</button>
+          <button
+            on:click={switchToTransaction}
+            class:selected={activeTab === "Transaction"}>Transaction</button
+          >
+          <button
+            on:click={switchToCategory}
+            class:selected={activeTab === "Category"}>Category</button
+          >
+          <button
+            on:click={switchToAccount}
+            class:selected={activeTab === "Account"}>Account</button
+          >
         </div>
         <section class="card">
           <div class="prose">
             <h1>{activeTab}</h1>
           </div>
-            {#if activeTab === 'Transaction'}
-              <TransactionForm {categoryOptions} {onClose}></TransactionForm>
-            {:else if activeTab === 'Category'}
-              <CategoryForm {onClose}></CategoryForm>
-            {:else}
-                <p>Account Form</p>
-            {/if}
+          {#if activeTab === "Transaction"}
+            <TransactionForm
+              {categories}
+              {accounts}
+              {onClose}
+              {switchToAccount}
+              {switchToCategory}
+            >
+              ></TransactionForm
+            >
+          {:else if activeTab === "Category"}
+            <CategoryForm {onClose}></CategoryForm>
+          {:else}
+            <AccountForm {onClose}></AccountForm>
+          {/if}
         </section>
       </div>
     </div>
   </div>
-  {/if}
+{/if}
 
-  <style>
+<style>
   :global(:root) {
     --gray: #17253e;
     --white: #f5f7fa;
@@ -77,16 +95,17 @@
     color: var(--white);
     border-radius: 11.83px;
     border: 2px solid;
-    width: 440px;
+    width: 370px;
     position: relative;
     padding: 5%;
     padding-top: 2.5rem;
     padding-bottom: 0;
     min-width: 300px;
+    height: 100%;
   }
   .card h1 {
     letter-spacing: 0.6px;
-    font-family: 'Iosevka', sans-serif;
+    font-family: "Iosevka", sans-serif;
     font-size: 2rem;
     margin: 0;
     text-align: center;
@@ -97,7 +116,7 @@
     flex-direction: row;
     gap: 0.5rem;
     letter-spacing: 0.6px;
-    font-family: 'Iosevka', sans-serif;
+    font-family: "Iosevka", sans-serif;
     align-items: center;
     justify-content: center;
     line-height: 1;

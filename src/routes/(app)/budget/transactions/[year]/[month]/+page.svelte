@@ -1,7 +1,7 @@
 <script>
   import { Plus } from "lucide-svelte";
   import MonthFilter from "$lib/MonthFilter.svelte";
-  import Table3 from "$lib/Table3.svelte";
+  import Table from "$lib/TransactionTable.svelte";
   import AddTransactions from "$lib/AddTransactions.svelte";
   import { onMount, onDestroy } from "svelte";
   import { pb } from "$lib/pocketbase";
@@ -72,10 +72,62 @@
         );
       }
     });
+    PB.collection("categories").subscribe("*", async ({ action, record }) => {
+      if (action === "create") {
+        let newRecord = {
+          name: record.name,
+          id: record.id,
+          type: record.type,
+          color: record.color,
+        };
+        data.categories = [...data.categories, newRecord];
+      }
+      if (action === "delete") {
+        data.categories = data.categories.filter(
+          (item) => item.id !== record.id
+        );
+      }
+      if (action == "update") {
+        let updateRecord = {
+          name: record.name,
+          id: record.id,
+          type: record.type,
+          color: record.color,
+        };
+        data.categories = data.categories.map((item) =>
+          item.id === record.id ? updateRecord : item
+        );
+      }
+    });
+    PB.collection("accounts").subscribe("*", async ({ action, record }) => {
+      if (action === "create") {
+        let newRecord = {
+          name: record.name,
+          id: record.id,
+          type: record.type,
+        };
+        data.accounts = [...data.accounts, newRecord];
+      }
+      if (action === "delete") {
+        data.accounts = data.accounts.filter((item) => item.id !== record.id);
+      }
+      if (action == "update") {
+        let updateRecord = {
+          name: record.name,
+          id: record.id,
+          type: record.type,
+        };
+        data.accounts = data.accounts.map((item) =>
+          item.id === record.id ? updateRecord : item
+        );
+      }
+    });
   });
 
   onDestroy(() => {
     PB.collection("transactions").unsubscribe("*");
+    PB.collection("categories").unsubscribe("*");
+    PB.collection("accounts").unsubscribe("*");
   });
 </script>
 
@@ -90,19 +142,15 @@
     </div>
     <AddTransactions
       {isOpen}
-      categoryOptions={data.categories}
+      categories={data.categories}
+      accounts={data.accounts}
       onClose={closeForm}
     ></AddTransactions>
-    <Table3
+    <Table
       transactions={data.transactions}
       categories={data.categories}
       accounts={data.accounts}
-    ></Table3>
-    {#if data.transactions.length === 0}
-      <div class="none">
-        <p class="none-text">No Transactions Found</p>
-      </div>
-    {/if}
+    ></Table>
   </div>
 </div>
 
@@ -167,20 +215,5 @@
     box-shadow: 0 0 black;
     color: var(--gray);
     background-color: var(--white);
-  }
-  .none {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: var(--black);
-    color: var(--white);
-    opacity: 0.8;
-    border-radius: 11.83px;
-    height: 300px;
-  }
-  .none .none-text {
-    font-size: 30px;
-    letter-spacing: 0.6px;
-    font-family: "Iosevka", sans-serif;
   }
 </style>

@@ -1,6 +1,6 @@
 <script>
     import ProgressBar from '$lib/ProgressBar.svelte';
-    import Table from '$lib/Table.svelte';
+    import Table from '$lib/DashboardTable.svelte';
     import YearFilter from '$lib/YearFilter.svelte';
 
     export let data;

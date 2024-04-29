@@ -3,37 +3,49 @@
   import { onMount } from "svelte";
 
   export let onClose;
-  export let category;
+  export let account;
+
+  const accountTypes = [
+    "Checking",
+    "Savings",
+    "Credit Card",
+    "Cash",
+    "Investment",
+    "Loan",
+    "Retirement",
+    "Money Market",
+    "Certificate of Deposit (CD)",
+    "Health Savings (HSA)",
+    "Flexible Spending (FSA)",
+    "Individual Retirement (IRA)",
+    "401(k)",
+    "Trust",
+  ];
 
   let name;
-  let color;
   let type;
-
   let mode = "Add";
 
   const PB = pb;
 
-  if (category) {
+  if (account) {
     mode = "Edit";
-    name = category.name;
-    type = category.type;
-    color = category.color;
+    name = account.name;
+    type = account.type;
   }
 
   function handleClose() {
     onClose();
   }
 
-  async function updateCategory() {
+  async function updateAccount() {
     const data = {
-      user: user,
       name: name,
       type: type,
-      color: color,
     };
 
     try {
-      await PB.collection("categories").create(data);
+      await PB.collection("accounts").update(account.id, data);
     } catch (error) {
       console.error(error);
     }
@@ -41,7 +53,7 @@
     onClose();
   }
 
-  async function addCategory() {
+  async function addAccount() {
     const data = {
       user: PB.authStore?.model.id,
       name: name,
@@ -49,7 +61,7 @@
     };
 
     try {
-      await PB.collection("categories").create(data);
+      await PB.collection("accounts").create(data);
     } catch (error) {
       console.error(error);
     }
@@ -59,9 +71,9 @@
 
   async function handleSubmit() {
     if (mode === "Add") {
-      await addCategory();
+      await addAccount();
     } else {
-      await updateCategory();
+      await updateAccount();
     }
   }
 
@@ -76,14 +88,10 @@
       <div class="flex flex-col gap-2">
         <label for="type">Type:</label>
         <select name="type" bind:value={type} required>
-          <option value="Income">Income</option>
-          <option value="Expense">Expense</option>
-          <option value="Saving">Saving</option>
+          {#each accountTypes as accountType}
+            <option value={accountType}>{accountType}</option>
+          {/each}
         </select>
-      </div>
-      <div class="flex flex-col gap-2">
-        <label for="color">Color:</label>
-        <input type="color" name="color" bind:value={color} required />
       </div>
     </div>
     <div class="flex flex-col gap-4">
@@ -101,13 +109,13 @@
   </div>
   <div class="flex items-center justify-end gap-4 mt-12">
     <button type="button" on:click={handleClose}>Close</button>
-    <button type="submit" on:click={handleSubmit}>{mode}</button>
+    <button type="submit" on:click={handleSubmit}>Submit</button>
   </div>
 </form>
 
 <style>
   form {
-    height: 290px;
+    height: 205px;
   }
   form input,
   form select {

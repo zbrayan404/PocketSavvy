@@ -1,6 +1,8 @@
 <script>
   import { MoreHorizontal } from "lucide-svelte";
   import BudgetForm from "$lib/BudgetForm.svelte";
+  import { onMount } from "svelte";
+  import { pb } from "$lib/pocketbase";
 
   export let budget;
   export let categories;
@@ -9,6 +11,8 @@
   let isEditMenuVisible = false;
   let isDeleteMenuVisible = false;
   let editButton;
+
+  const PB = pb;
 
   function clickOutside(node, params) {
     function onClick(event) {
@@ -44,6 +48,16 @@
     isDeleteMenuVisible = false;
   }
 
+  async function deleteBudget() {
+    try {
+      await PB.collection("budgets").delete(budget.id);
+    } catch (error) {
+      console.error(error);
+    }
+
+    isDeleteMenuVisible = false;
+  }
+
   let menuItems = [
     {
       name: "edit",
@@ -56,6 +70,10 @@
       displayText: "Delete",
     },
   ];
+
+  onMount(() => {
+    PB.authStore?.loadFromCookie(document.cookie);
+  });
 </script>
 
 <div>
@@ -112,7 +130,7 @@
                 type="button"
                 on:click={() => (isDeleteMenuVisible = false)}>Cancel</button
               >
-              <button type="submit">Delete</button>
+              <button type="submit" on:click={deleteBudget}>Delete</button>
             </div>
           </form>
         {/if}

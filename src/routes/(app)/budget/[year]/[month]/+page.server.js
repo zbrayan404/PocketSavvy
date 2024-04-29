@@ -51,7 +51,6 @@ export async function load({ locals, params }) {
         year: record.Year,
         id: record.id,
       }));
-      console.log("Budgets:", data);
       return data;
     } catch (error) {
       console.error("Error fetching budgets:", error);

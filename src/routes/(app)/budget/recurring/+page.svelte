@@ -1,6 +1,6 @@
 <script>
     import MonthFilter from '$lib/MonthFilter.svelte';
-    import Table2 from '$lib/Table2.svelte';
+    import Table2 from '$lib/BudgetTable.svelte';
     import Budget1 from '$lib/Budget.svelte';
 
     let categoryType = ['Income', 'Expenses', 'Savings'];

@@ -1,15 +1,19 @@
 <script>
   import { MoreHorizontal } from "lucide-svelte";
   import TransactionForm from "$lib/TransactionForm.svelte";
+  import { onMount } from "svelte";
+  import { pb } from "$lib/pocketbase";
 
   export let transaction;
-  export let categoryOptions;
+  export let categories;
   export let accounts;
 
   let isMenuVisible = false;
   let isEditMenuVisible = false;
   let isDeleteMenuVisible = false;
   let editButton;
+
+  const PB = pb;
 
   function clickOutside(node, params) {
     function onClick(event) {
@@ -45,6 +49,16 @@
     isDeleteMenuVisible = false;
   }
 
+  async function deleteTransaction() {
+    try {
+      await PB.collection("transactions").delete(transaction.id);
+    } catch (error) {
+      console.error(error);
+    }
+
+    isDeleteMenuVisible = false;
+  }
+
   let menuItems = [
     {
       name: "edit",
@@ -57,6 +71,10 @@
       displayText: "Delete",
     },
   ];
+
+  onMount(() => {
+    PB.authStore?.loadFromCookie(document.cookie);
+  });
 </script>
 
 <div>
@@ -94,23 +112,21 @@
           <h1>Transaction</h1>
         </div>
         {#if isEditMenuVisible}
-          <TransactionForm
-            {categoryOptions}
-            {onClose}
-            {transaction}
-            accountOptions={accounts}
+          <TransactionForm {categories} {onClose} {transaction} {accounts}
           ></TransactionForm>
         {/if}
         {#if isDeleteMenuVisible}
-          <form method="POST" action="?/deleteTransaction">
-            <p>Are you should?</p>
+          <form on:submit|preventDefault>
+            <div class="note">
+              <p>Are you should?</p>
+            </div>
             <input type="text" name="id" bind:value={transaction.id} hidden />
             <div class="buttons">
               <button
                 type="button"
                 on:click={() => (isDeleteMenuVisible = false)}>Cancel</button
               >
-              <button type="submit">Delete</button>
+              <button type="submit" on:click={deleteTransaction}>Delete</button>
             </div>
           </form>
         {/if}
@@ -189,6 +205,11 @@
     margin: 0;
     text-align: center;
   }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
   form button {
     cursor: pointer;
     display: flex;
@@ -219,5 +240,15 @@
     display: flex;
     justify-content: space-evenly;
     padding-bottom: 40px;
+  }
+  .note {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--white);
+    font-family: "Iosevka", sans-serif;
+    letter-spacing: 0.6px;
+    font-size: 1.2rem;
+    margin-top: 30px;
   }
 </style>
