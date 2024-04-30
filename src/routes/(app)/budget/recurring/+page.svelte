@@ -1,10 +1,11 @@
 <script>
     import { Cat, Plus } from "lucide-svelte";
     import AddReoccuring from '$lib/AddReoccuring.svelte';
+    import Table from '$lib/ReoccuringTable.svelte';
 
-    //export let data;
+    export let data;
 
-    // let categoryType = ['Income', 'Expenses', 'Savings'];
+    let categoryType = ['Income', 'Expenses', 'Savings'];
    
     let isOpen = false;
 
@@ -24,27 +25,25 @@
 
 <div class="body">
     <div class="main">
+        <div style="">
+
+        </div>
         <div class="header">
             <h1>Reocurring</h1>
             <button on:click={openForm} class="add"><Plus size={30} /></button>
         </div>
         <AddReoccuring {isOpen} onClose={closeForm}></AddReoccuring>
-        <!-- <ExpenseForm {isOpen} onClose={closeForm}></ExpenseForm> -->
-        <!-- <div class="overview">
+        <div class="overview">
             <div class="budget-overview"> 
-                {#each categoryType as type}
-                    <div class="budget">
-                        <h2>{type}</h2>
-                        <div class="table">
-                            <div class="indent"></div>
-                            <-- Table
-                        </div>
-                    </div>
-	            {/each}
+                                <Table
+                                transactions={data.transactions}
+                                categories={data.categories}
+                                accounts={data.accounts}
+                                ></Table>
             </div>
             <div class="category-overview">
             </div>
-        </div> -->
+        </div>
     </div>
 </div>
 
