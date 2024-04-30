@@ -1,9 +1,10 @@
 <script>
-    import MonthFilter from '$lib/MonthFilter.svelte';
-    import Table2 from '$lib/BudgetTable.svelte';
-    import Budget1 from '$lib/Budget.svelte';
+    import { Cat, Plus } from "lucide-svelte";
+    import AddReoccuring from '$lib/AddReoccuring.svelte';
 
-    let categoryType = ['Income', 'Expenses', 'Savings'];
+    //export let data;
+
+    // let categoryType = ['Income', 'Expenses', 'Savings'];
    
     let isOpen = false;
 
@@ -19,35 +20,31 @@
         isOpen = false;
     }
 
-    let currentDate = new Date()
-    let month = currentDate.getMonth();
-    let year = currentDate.getFullYear();
-
 </script>
 
 <div class="body">
-    <MonthFilter bind:selectedMonth={month} bind:year={year}></MonthFilter>
     <div class="main">
         <div class="header">
-            <h1>Budget</h1>
-            <button on:click={openForm} class="add-expenses-button">+</button>
+            <h1>Reocurring</h1>
+            <button on:click={openForm} class="add"><Plus size={30} /></button>
         </div>
+        <AddReoccuring {isOpen} onClose={closeForm}></AddReoccuring>
         <!-- <ExpenseForm {isOpen} onClose={closeForm}></ExpenseForm> -->
-        <div class="overview">
+        <!-- <div class="overview">
             <div class="budget-overview"> 
                 {#each categoryType as type}
                     <div class="budget">
                         <h2>{type}</h2>
                         <div class="table">
                             <div class="indent"></div>
-                            <!-- Table -->
+                            <-- Table
                         </div>
                     </div>
 	            {/each}
             </div>
             <div class="category-overview">
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 
@@ -85,7 +82,7 @@
         font-family: 'Iosevka', sans-serif;
         font-size: 40px;
     }
-    h2 {
+    /* h2 {
         letter-spacing: 0.6px;
         font-family: 'Iosevka', sans-serif;
         font-size: 30px;
@@ -118,8 +115,29 @@
         .category-overview {
             display: none;
         }
+    } */
+    .add {
+        height: 40px;
+        width: 40px;
+        background-color: var(--gray);
+        color: var(--white);
+        border-radius: 11.83px;
+        background-clip: padding-box;
+        box-shadow: 1.9px 3.81px 0px var(--white);
+        border: 2px solid;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Iosevka', sans-serif;
+        font-size: 30px;
     }
-    .add-expenses-button {
+    .add:hover {
+		box-shadow: 0 0 black;
+		color: var(--gray);
+		background-color: var(--white);
+    }
+    /* .add-expenses-button {
         height: 40px;
         width: 40px;
         background-color: var(--gray);
@@ -139,5 +157,5 @@
 		box-shadow: 0 0 black;
 		color: var(--gray);
 		background-color: var(--white);
-    }
+    } */
 </style>
