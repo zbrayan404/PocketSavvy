@@ -42,7 +42,7 @@
   let menuItems = [
     {
       'name': 'settings',
-      'path': '/settings',
+      'path': '/settings/avatar',
       'displayText': 'Settings',
     },
     {

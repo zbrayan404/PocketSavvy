@@ -102,7 +102,7 @@
         padding-top: 2.5rem;
         padding-bottom: 0;
         min-width: 300px;
-        height: 350px;
+        height: 500px;
     }
     .card button {
 		cursor: pointer;
@@ -138,8 +138,9 @@
 		text-align: center;
     }
     .card .avatar-img {
-        width: 128px;
-        height: 128px;
+        width: 256px;
+        height: 256px;
+        padding-bottom: 10px;
     }
     .card .avatar-grid {
         display: flex;
