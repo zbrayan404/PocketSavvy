@@ -1,15 +1,13 @@
 <script>
   import { pb } from "$lib/pocketbase.js";
   import { onMount } from "svelte";
-  //import { switchToCategory } from "./Form.svelte";
 
   export let onClose;
   export let budget;
   export let categoryOptions = [];
   export let month;
   export let year;
-  //export let switchToCategory;
-  //export let activeTab;
+  export let switchToCategory;
 
   const months = [
     "January",
@@ -54,12 +52,11 @@
     onClose();
   }
 
-  // Function to handle item selection
   function handleSelect(event) {
     const value = event.target.value;
     console.log(value);
-    if (value === "Other") {
-      // switchToCategory();
+    if (value === "category") {
+      switchToCategory();
     }
   }
 
@@ -74,11 +71,10 @@
 
     try {
       await PB.collection("budgets").update(budget.id, data);
+      onClose();
     } catch (error) {
       console.error(error);
     }
-
-    onClose();
   }
 
   async function addBudget() {
@@ -94,11 +90,10 @@
 
     try {
       await PB.collection("budgets").create(data);
+      onClose();
     } catch (error) {
       console.error(error);
     }
-
-    onClose();
   }
 
   async function handleSubmit() {
@@ -125,10 +120,13 @@
           bind:value={category}
           required
         >
+          {#if mode === "Add"}
+            <option value="">Select a Category</option>
+          {/if}
           {#each categoryOptions as cat}
             <option value={cat.id}>{cat.name + " (" + cat.type + ")"} </option>
           {/each}
-          <option value="Other">Other</option>
+          <option value="category">Other</option>
         </select>
       </div>
       <div class="flex flex-col gap-2">

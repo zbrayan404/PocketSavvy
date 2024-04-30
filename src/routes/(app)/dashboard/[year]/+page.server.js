@@ -17,6 +17,7 @@ export async function load({ locals, params }) {
         filter: `Year = ${parseInt(params.year)}`,
       });
       let data = records.map((record) => ({
+        categoryID: record.category,
         category: record.categoryName,
         color: record.color,
         type: record.type,
@@ -33,6 +34,6 @@ export async function load({ locals, params }) {
 
   return {
     year: parseInt(params.year),
-    budgets: getBudgets(),
+    budgets: await getBudgets(),
   };
 }

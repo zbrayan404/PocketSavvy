@@ -34,11 +34,10 @@
 
     try {
       await PB.collection("categories").create(data);
+      onClose();
     } catch (error) {
       console.error(error);
     }
-
-    onClose();
   }
 
   async function addCategory() {
@@ -50,11 +49,10 @@
 
     try {
       await PB.collection("categories").create(data);
+      onClose();
     } catch (error) {
       console.error(error);
     }
-
-    onClose();
   }
 
   async function handleSubmit() {
@@ -76,6 +74,9 @@
       <div class="flex flex-col gap-2">
         <label for="type">Type:</label>
         <select name="type" bind:value={type} required>
+          {#if mode === "Add"}
+            <option value="">Select a Type</option>
+          {/if}
           <option value="Income">Income</option>
           <option value="Expense">Expense</option>
           <option value="Saving">Saving</option>

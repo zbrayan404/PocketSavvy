@@ -3,25 +3,10 @@
   import { pb } from "$lib/pocketbase";
   import MonthFilter from "$lib/MonthFilter.svelte";
   import Table from "$lib/BudgetTable.svelte";
-  import Budget1 from "$lib/Budget.svelte";
   import Form from "$lib/Form.svelte";
   import { onMount, onDestroy } from "svelte";
 
   export let data;
-
-  // let incomes = [
-  //     { category: 'Employment', current: 3500.00, budget: 3500.00, color: 'blue' },
-  //     { category: 'Side Hustle', current: 560.00, budget: 1000.00, color: 'green' },
-  //     { category: 'Investments', current: 180.00, budget: 300.00, color: 'red'},
-  //     { category: 'Other', current: 12.40, budget: 150.00, color: 'yellow'}
-  // ];
-
-  // let category = [
-  //     {category: 'Employment', color: 'blue', type: 'Income'},
-  //     {category: 'Side Hustle', color: 'green', type: 'Income'},
-  //     {category: 'Investments', color: 'red', type: 'Saving'},
-  //     {category: 'Other', color: 'yellow', type: 'Income'}
-  // ];
 
   let types = ["Income", "Expense", "Saving"];
 
@@ -46,13 +31,18 @@
     PB.authStore?.loadFromCookie(document.cookie);
     PB.collection("categories").subscribe("*", async ({ action, record }) => {
       if (action === "create") {
+        const getRecord = await PB.collection("budgetSummary").getOne(
+          record.id
+        );
         let newRecord = {
-          name: record.name,
-          id: record.id,
-          type: record.type,
-          color: record.color,
+          category: getRecord.categoryName,
+          color: getRecord.color,
+          type: getRecord.type,
+          current: getRecord.amount,
+          budget: getRecord.budget,
+          id: getRecord.id,
         };
-        data.categories = [...data.categories, newRecord];
+        categories = [...data.categories, newRecord];
       }
       if (action === "delete") {
         data.categories = data.categories.filter(
@@ -147,9 +137,7 @@
           </div>
         {/each}
       </div>
-      <div class="category-overview">
-        <!-- <Budget1 dataSet={incomes} categoryList={category} ></Budget1> -->
-      </div>
+      <div class="category-overview"></div>
     </div>
   </div>
 </div>
