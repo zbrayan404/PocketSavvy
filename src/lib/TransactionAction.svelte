@@ -118,7 +118,7 @@
         {#if isDeleteMenuVisible}
           <form on:submit|preventDefault>
             <div class="note">
-              <p>Are you should?</p>
+              <p>Are you sure?</p>
             </div>
             <input type="text" name="id" bind:value={transaction.id} hidden />
             <div class="buttons">
