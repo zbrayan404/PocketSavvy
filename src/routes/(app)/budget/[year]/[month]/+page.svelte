@@ -31,18 +31,13 @@
     PB.authStore?.loadFromCookie(document.cookie);
     PB.collection("categories").subscribe("*", async ({ action, record }) => {
       if (action === "create") {
-        const getRecord = await PB.collection("budgetSummary").getOne(
-          record.id
-        );
         let newRecord = {
-          category: getRecord.categoryName,
-          color: getRecord.color,
-          type: getRecord.type,
-          current: getRecord.amount,
-          budget: getRecord.budget,
-          id: getRecord.id,
+          name: record.name,
+          id: record.id,
+          type: record.type,
+          color: record.color,
         };
-        categories = [...data.categories, newRecord];
+        data.categories = [...data.categories, newRecord];
       }
       if (action === "delete") {
         data.categories = data.categories.filter(
@@ -68,10 +63,15 @@
         );
         let newRecord = {
           category: getRecord.categoryName,
+          categoryID: getRecord.category,
           color: getRecord.color,
           type: getRecord.type,
           current: getRecord.amount,
           budget: getRecord.budget,
+          startDate: getRecord.startDate,
+          endDate: getRecord.endDate,
+          month: getRecord.Month,
+          year: getRecord.Year,
           id: getRecord.id,
         };
         data.budgets = [...data.budgets, newRecord];

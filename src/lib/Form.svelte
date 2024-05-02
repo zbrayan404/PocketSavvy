@@ -84,7 +84,7 @@
     color: var(--white);
     border-radius: 11.83px;
     border: 2px solid;
-    width: 440px;
+    width: 370px;
     position: relative;
     padding: 5%;
     padding-top: 2.5rem;

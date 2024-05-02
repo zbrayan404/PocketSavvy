@@ -19,6 +19,9 @@
 
   const findAccountName = (id) => {
     let account = accounts.find((account) => account.id === id);
+    if (!account) {
+      return "No Account";
+    }
     return account.name;
   };
 
